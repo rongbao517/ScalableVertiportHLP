@@ -1,0 +1,16 @@
+{
+  "data": "shanghai_demand_windows_kmeans30.npz",
+  "hidden": 64,
+  "dropout": 0.1,
+  "lr": 0.001,
+  "batchsize": 64,
+  "epoch": 100,
+  "patience": 15,
+  "seed": 100,
+  "gpu": 0,
+  "adj_sigma_scale": 1.0,
+  "top_k": 5,
+  "loss": "quantile",
+  "tau": 0.7,
+  "model": "TGCN"
+}

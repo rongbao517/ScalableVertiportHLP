@@ -1,0 +1,38 @@
+[
+  {
+    "channel": 1,
+    "name": "is_holiday_or_weekend",
+    "mean": 0.30670925974845886,
+    "std": 0.4611276090145111
+  },
+  {
+    "channel": 2,
+    "name": "temp_max_c",
+    "mean": 18.8731632232666,
+    "std": 4.552110195159912
+  },
+  {
+    "channel": 3,
+    "name": "temp_min_c",
+    "mean": 10.202555656433105,
+    "std": 3.328892946243286
+  },
+  {
+    "channel": 4,
+    "name": "precip_mm",
+    "mean": 2.2012779712677,
+    "std": 4.785895347595215
+  },
+  {
+    "channel": 5,
+    "name": "windspeed_max_kmh",
+    "mean": 19.42523956298828,
+    "std": 6.241572380065918
+  },
+  {
+    "channel": 6,
+    "name": "humidity_pct",
+    "mean": 74.92652130126953,
+    "std": 8.274699211120605
+  }
+]

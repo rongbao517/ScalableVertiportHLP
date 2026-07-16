@@ -1,0 +1,2 @@
+epoch 0 time used: 197 seconds train loss: 0.1181527362 validation loss: 0.0359033964
+epoch 1 time used: 184 seconds train loss: 0.0328550807 validation loss: 0.0358037402

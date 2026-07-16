@@ -1,0 +1,2 @@
+vehicles_per_vertiport,fleet_size,discharge_rate,charging_rate_per_bin,rebalance_interval,rebalance_min_reserve,n_rebalance_moves_total,n_bins,total_real_demand,total_met,total_unmet,assignment_ratio,big_picture_assignment_ratio,cumulative_cost
+80,2400,1.0,7.0,4,1,6315,1392,32412.0,32400,16535.0,0.6621027894145295,0.9996297667530544,18010760.798484158

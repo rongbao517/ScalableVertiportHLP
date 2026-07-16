@@ -1,0 +1,16 @@
+{
+  "data": "shanghai_demand_windows_kmeans30.npz",
+  "hidden": 64,
+  "embed_dim": 16,
+  "n_layers": 3,
+  "dropout": 0.1,
+  "lr": 0.001,
+  "batchsize": 64,
+  "epoch": 100,
+  "patience": 15,
+  "seed": 100,
+  "gpu": 0,
+  "loss": "mse",
+  "tau": 0.7,
+  "model": "STID"
+}
