@@ -13,10 +13,16 @@ objective, K-means has no way to just pile all 30 sites into one hotspot:
 minimizing within-cluster variance forces spatial spread by construction).
 
 Each cluster center is a synthetic (lat, lon), not a real buildable site --
-snapped to the nearest actual grid cell (by haversine), deduplicated
-against other clusters' snapped picks (if two clusters snap to the same
-cell, the later one takes the next-nearest free cell).
+so, within that cluster's own member cells, we pick the single highest-demand
+grid cell as the buildable site (not just the nearest-to-centroid cell
+regardless of its own demand: a weighted-KMeans centroid can land in a locally
+quiet pocket of an otherwise busy cluster -- e.g. residential blocks between
+two hot commercial strips -- so snapping to "nearest" alone was occasionally
+picking a near-zero-demand cell out of a cluster with 100k+ total trips.
+Picking the cluster's own top-demand cell can't collide across clusters
+either, since cluster membership already partitions all cells disjointly).
 """
+import argparse
 from pathlib import Path
 
 import numpy as np
@@ -44,7 +50,13 @@ def haversine_km(lat1, lon1, lat2, lon2):
 
 
 def main():
-    grid = pd.read_csv(DEMAND_CSV)
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--demand-csv", type=str, default=str(DEMAND_CSV))
+    ap.add_argument("--out-csv", type=str, default=str(OUT_CSV))
+    ap.add_argument("--out-assignments-csv", type=str, default=str(OUT_ASSIGNMENTS_CSV))
+    args = ap.parse_args()
+
+    grid = pd.read_csv(args.demand_csv)
     n = len(grid)
     lat = grid["avg_lat"].to_numpy()
     lon = grid["avg_lon"].to_numpy()
@@ -57,10 +69,10 @@ def main():
     centers = km.cluster_centers_  # (30, 2) in (lat, lon)
 
     chosen_idx = []
-    for c_lat, c_lon in centers:
-        d = haversine_km(c_lat, c_lon, lat, lon)
-        d[chosen_idx] = np.inf  # no two clusters may snap to the same grid cell
-        chosen_idx.append(int(np.argmin(d)))
+    for c in range(N_CLUSTERS):
+        member_idx = np.where(km.labels_ == c)[0]
+        best = member_idx[np.argmax(weight[member_idx])]
+        chosen_idx.append(int(best))
 
     sites = grid.iloc[chosen_idx].reset_index(drop=True)
     sites["cluster_label"] = range(N_CLUSTERS)
@@ -69,16 +81,16 @@ def main():
     sites["cluster_n_cells"] = cluster_sizes.reindex(range(N_CLUSTERS)).to_numpy()
     sites["cluster_total_demand"] = cluster_weight.reindex(range(N_CLUSTERS)).to_numpy()
 
-    sites.to_csv(OUT_CSV, index=False)
-    print(f"saved -> {OUT_CSV}")
+    sites.to_csv(args.out_csv, index=False)
+    print(f"saved -> {args.out_csv}")
 
     # per-cell cluster assignment for ALL 1676 grid cells, for mapping/visualization
     assignments = grid[["idx", "Grid ID", "avg_lat", "avg_lon", "real_total_demand"]].copy()
     assignments["cluster_label"] = km.labels_
     assignments["is_selected_site"] = False
     assignments.loc[chosen_idx, "is_selected_site"] = True
-    assignments.to_csv(OUT_ASSIGNMENTS_CSV, index=False)
-    print(f"saved -> {OUT_ASSIGNMENTS_CSV}")
+    assignments.to_csv(args.out_assignments_csv, index=False)
+    print(f"saved -> {args.out_assignments_csv}")
     print(f"total real demand captured by 30 chosen cells: {sites['real_total_demand'].sum():.0f}  "
           f"(vs. NSGA v3 10-site: separate comparison)")
 

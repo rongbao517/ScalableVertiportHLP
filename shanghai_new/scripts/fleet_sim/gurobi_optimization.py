@@ -40,6 +40,20 @@ def run_gurobi_optimization(orders, vertiports, distance_air, vehicle_count, tim
 
     m = gp.Model("fleet_dispatch_plan")
     m.Params.OutputFlag = 0
+    # This LP typically has multiple tied-optimal vertex solutions (many
+    # (s,e) pairs competing for the same vehicle-count capacity bound with
+    # equal objective coefficients), and Gurobi's default Method=-1
+    # ("concurrent": several algorithms race, whichever finishes first wins)
+    # picks a different tied vertex depending on thread-scheduling timing --
+    # confirmed empirically: three back-to-back runs of this same simulation
+    # with byte-identical inputs produced total_met of 25784/28947/31509
+    # (>20% spread) purely from this. Threads=1 + a fixed deterministic
+    # Method removes the race so results reproduce exactly run-to-run --
+    # required for any sensitivity comparison (like a DWELL_MIN sweep) to be
+    # trustworthy at all.
+    m.Params.Threads = 1
+    m.Params.Method = 1  # dual simplex, deterministic
+    m.Params.Seed = 0
 
     pairs = list(demand.keys())
     x = m.addVars(pairs, lb=0.0, name="x")
@@ -47,7 +61,13 @@ def run_gurobi_optimization(orders, vertiports, distance_air, vehicle_count, tim
     for (s, e) in pairs:
         m.addConstr(x[s, e] <= demand[(s, e)], name=f"cap_demand_{s}_{e}")
 
-    origins = {s for (s, _e) in pairs}
+    # sorted (not a bare set comprehension): CPython set iteration order
+    # depends on str hash values, which are randomized per-process
+    # (PYTHONHASHSEED) unless fixed -- that reordered which capacity
+    # constraint gets added to the LP first across runs, which was the
+    # remaining source of tiny residual tie-break differences even after
+    # Threads=1/Method=1/Seed=0 above.
+    origins = sorted({s for (s, _e) in pairs})
     for s in origins:
         m.addConstr(
             gp.quicksum(x[s, e] for (s2, e) in pairs if s2 == s) <= vehicle_count.get(s, 0),

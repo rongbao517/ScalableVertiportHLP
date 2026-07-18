@@ -16,6 +16,17 @@ ignores individual battery levels. This module is where that gap surfaces:
 a specific standby vehicle might be too low on charge for this route's
 distance even though the LP assumed the vertiport had capacity, producing
 additional shortfall beyond what Gurobi predicted.
+
+Ground access/egress time (previously modeled nowhere in fleet_sim -- a
+passenger's order was treated as appearing already AT the departure
+vertiport, and the vehicle's occupation window covered only the air leg)
+is now folded into trip_duration_bins() below, using the same dynamic
+per-(hour_of_day, day_type)-bucket ground speed predicted by
+train_shanghai_speed_gru.py / predict_speed_by_bucket.py that
+route_assignment_od_to_vertiports.py already uses for the grid-to-vertiport
+routing problem. flight_duration_bins() (air time only) is kept as-is and
+still used for rebalancing.py's empty repositioning flights, which carry no
+passenger and so have no ground leg to model.
 """
 from collections import Counter
 
@@ -24,10 +35,42 @@ from distance_battery import calculate_distance, battery_consumption_required
 AIR_SPEED_KMH = 200.0
 BIN_MINUTES = 30.0
 
+# fleet_sim's demand tensor (shanghai_od_kmeans30_30min_1channel.npz) only
+# counts trips whose origin AND destination both fall inside the vertiport's
+# OWN 0.01-degree grid cell (see extract_shanghai_od_matrix_kmeans30.py's
+# build_site_lookup) -- so every passenger's real ground access distance is
+# small and roughly fixed, not the multi-km distances
+# route_assignment_od_to_vertiports.py handles for the full 1676-grid case.
+# ACCESS_EGRESS_KM is the expected distance from a uniformly random point
+# inside that cell (~1.11km x ~0.95km at Shanghai's latitude) to the site's
+# own coordinate, estimated by Monte Carlo (2e6 samples): ~0.396km, rounded.
+ACCESS_EGRESS_KM = 0.40
+# same boarding/security/taxi overhead convention as
+# route_assignment_od_to_vertiports.py's DWELL_MIN, applied per ground leg.
+# No ground-truth boarding-time data exists in this project -- kept as a
+# module-level default (matching route_assignment_od_to_vertiports.py) but
+# also accepted as a trip_duration_bins() argument so it can be swept.
+DWELL_MIN = 5.0
+
 
 def flight_duration_bins(distance_km):
     air_time_min = distance_km / AIR_SPEED_KMH * 60.0
     return max(1, int(-(-air_time_min // BIN_MINUTES)))  # ceil division
+
+
+def trip_duration_bins(distance_km, ground_speed_kmh, dwell_min=DWELL_MIN,
+                        access_km=ACCESS_EGRESS_KM, egress_km=ACCESS_EGRESS_KM):
+    """Passenger-carrying dispatch duration: ground access + air + ground egress,
+    unlike flight_duration_bins() which is air-time-only (used for empty
+    repositioning flights that have no passenger and thus no ground leg).
+    access_km/egress_km default to the small intra-cell approximation but
+    can be overridden with real per-(takeoff,landing,bucket) distances (see
+    build_dynspeed_full_demand.py) when using the full-grid routed demand."""
+    access_time_min = access_km / ground_speed_kmh * 60.0 + dwell_min
+    egress_time_min = egress_km / ground_speed_kmh * 60.0 + dwell_min
+    air_time_min = distance_km / AIR_SPEED_KMH * 60.0
+    total_min = access_time_min + air_time_min + egress_time_min
+    return max(1, int(-(-total_min // BIN_MINUTES)))  # ceil division
 
 
 def update_arrivals(vehicle_states, vertiport_states, vehicle_movements, current_step, debug=False):
@@ -50,10 +93,32 @@ def update_arrivals(vehicle_states, vertiport_states, vehicle_movements, current
 
 
 def time_step_path_assignment(gurobi_results, vehicle_states, vertiport_states, discharge_rate,
-                               vehicle_movements, current_step, debug=False):
+                               vehicle_movements, current_step, ground_speed_kmh, dwell_min=DWELL_MIN,
+                               access_egress_lookup=None, debug=False):
     unmet_after_assignment = []
     assigned_routes = []
     launched_ids = []
+    # Reason-tagged shortfall totals for this bin, purely diagnostic (doesn't
+    # affect dispatch): of a path's shortfall (requested - n_dispatch), how
+    # much is because the vehicles Gurobi's LP counted as "at s" (loc==s,
+    # regardless of in_service -- see gurobi_optimization.py) are actually
+    # mid-flight elsewhere right now (away_flying) vs. physically idle at s
+    # but under-charged for this route's distance (insufficient_battery).
+    # idle_at_s <= vehicle_count_at_s (candidates ignore in-flight vehicles)
+    # and idle_with_battery <= idle_at_s (battery filter is a strict subset),
+    # so requested - min(requested, idle_with_battery) always decomposes
+    # exactly into these two non-negative, non-overlapping pieces -- plus a
+    # third, "rounding_jitter": n_dispatch below floors requested to a whole
+    # vehicle count (int(requested)) before capping by candidates, since you
+    # can't physically dispatch a fractional vehicle, but `requested` itself
+    # is usually fractional (bucket-averaged demand, e.g. 344.43 "trips" this
+    # bin) -- so even with an abundant candidate surplus, up to ~1 unit of
+    # "shortfall" per (s,e) pair per bin is just frac(requested) carrying
+    # over to next bin's total, not a real fleet/battery constraint. This is
+    # bounded (never > 1 per pair; it's frac() of a running accumulator, not
+    # a growing backlog) but can dominate reported unmet_demand when demand
+    # per pair per bin is itself small (e.g. filtered/lower-volume scenarios).
+    shortfall_reasons = {"away_flying": 0.0, "insufficient_battery": 0.0, "rounding_jitter": 0.0}
 
     for path in gurobi_results:
         s = path["takeoff"]
@@ -62,6 +127,7 @@ def time_step_path_assignment(gurobi_results, vehicle_states, vertiport_states, 
         distance = path.get("distance", calculate_distance(s, e))
         required_battery = battery_consumption_required(distance, discharge_rate)
 
+        idle_at_s = sum(1 for state in vehicle_states.values() if state["loc"] == s and state["in_service"] == 0)
         candidates = [
             vid for vid, state in vehicle_states.items()
             if state["loc"] == s and state["in_service"] == 0 and state["battery"] >= required_battery
@@ -71,12 +137,22 @@ def time_step_path_assignment(gurobi_results, vehicle_states, vertiport_states, 
         n_dispatch = min(int(requested), len(candidates))
         dispatched = candidates[:n_dispatch]
 
+        shortfall_reasons["away_flying"] += max(0.0, requested - idle_at_s)
+        shortfall_reasons["insufficient_battery"] += max(0.0, min(requested, idle_at_s) - len(candidates))
+        shortfall_reasons["rounding_jitter"] += min(requested, len(candidates)) - min(int(requested), len(candidates))
+
+        access_km, egress_km = (
+            access_egress_lookup.get((s, e), (ACCESS_EGRESS_KM, ACCESS_EGRESS_KM))
+            if access_egress_lookup is not None else (ACCESS_EGRESS_KM, ACCESS_EGRESS_KM)
+        )
+
         for vid in dispatched:
             vehicle_states[vid]["in_service"] = 1
             vehicle_states[vid]["battery"] -= required_battery
             vehicle_movements[vid] = {
                 "start": s, "end": e,
-                "arrival_step": current_step + flight_duration_bins(distance),
+                "arrival_step": current_step + trip_duration_bins(
+                    distance, ground_speed_kmh, dwell_min, access_km, egress_km),
                 "distance": distance,
             }
             vertiport_states[s]["avail"] -= 1
@@ -93,4 +169,4 @@ def time_step_path_assignment(gurobi_results, vehicle_states, vertiport_states, 
         if debug and shortfall > 0:
             print(f"[SHORTFALL] {s}->{e} requested={requested} dispatched={n_dispatch} shortfall={shortfall}")
 
-    return unmet_after_assignment, assigned_routes, launched_ids
+    return unmet_after_assignment, assigned_routes, launched_ids, shortfall_reasons

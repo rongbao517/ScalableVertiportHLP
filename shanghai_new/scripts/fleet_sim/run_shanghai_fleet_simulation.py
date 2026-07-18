@@ -33,7 +33,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from distance_battery import haversine_km, set_distance_data, calculate_distance
+from distance_battery import haversine_km, set_distance_data, calculate_distance, battery_consumption_required
 from initialization import initialize_states_with_time
 from battery_charging import charging_and_battery_update, restore_vehicle_states, export_charging_log
 from task_assignment import update_arrivals, time_step_path_assignment
@@ -46,6 +46,78 @@ PROJECT_DIR = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_DIR / "data"
 OUT_DIR = PROJECT_DIR / "outputs"
 SIM_OUT_DIR = OUT_DIR / "fleet_sim"
+
+OD_META_CSV = OUT_DIR / "shanghai_od_kmeans30_meta.csv"
+WEATHER_CSV = DATA_DIR / "shanghai_calendar_weather_202504.csv"
+SPEED_BUCKET_CSV = DATA_DIR / "predicted_ground_speed_by_bucket.csv"
+DYNSPEED_DEMAND_BUCKET_CSV = OUT_DIR / "fleet_sim_dynspeed_full_demand_bucket.csv"
+
+
+def build_ground_speed_per_bin(n_bins, meta_csv=OD_META_CSV, weather_csv=WEATHER_CSV,
+                                speed_bucket_csv=SPEED_BUCKET_CSV):
+    """One ground_speed_kmh value per simulation bin t, looked up from the same
+    48-row (hour_of_day, day_type) bucket table route_assignment_od_to_vertiports.py
+    uses -- day_type collapses the calendar's workday/weekend/holiday split to a
+    binary workday/offday, matching extract_full_grid_od_pairs_by_bucket.py's
+    convention exactly, so both scripts see the same speed for the same bin."""
+    meta = pd.read_csv(meta_csv, parse_dates=["timestamp"]).sort_values("compressed_bin_idx")
+    assert len(meta) >= n_bins, f"meta has {len(meta)} rows, need {n_bins}"
+    cal = pd.read_csv(weather_csv, parse_dates=["date"])
+    is_workday = dict(zip(cal["date"].dt.strftime("%Y%m%d"), cal["day_type"].eq("workday")))
+    speed_lookup = pd.read_csv(speed_bucket_csv).set_index(["hour_of_day", "day_type"])["predicted_speed_kmh"]
+
+    speeds = np.empty(n_bins, dtype=np.float64)
+    for t in range(n_bins):
+        ts = meta.iloc[t]["timestamp"]
+        day_type = "workday" if is_workday.get(ts.strftime("%Y%m%d")) else "offday"
+        speeds[t] = float(speed_lookup.loc[(ts.hour, day_type)])
+    return speeds
+
+
+def load_demand_and_access_per_bin(n_bins, grid_ids, bucket_csv=DYNSPEED_DEMAND_BUCKET_CSV,
+                                    meta_csv=OD_META_CSV, weather_csv=WEATHER_CSV):
+    """Alternative to load_demand_per_bin(): real full-grid routed demand
+    (build_dynspeed_full_demand.py, derived from route_assignment_od_to_vertiports.py's
+    dynamic-speed output) instead of the ~184K-trip intra-cell-only subset --
+    real access/egress ground distances (km-scale, not the ~0.4km intra-cell
+    approximation task_assignment.ACCESS_EGRESS_KM uses by default) come along
+    with it. bucket_csv has one row per (takeoff, landing, hour_of_day,
+    day_type); every bin sharing a bucket gets that bucket's already-averaged
+    avg_trip_count_per_bin (see build_dynspeed_full_demand.py's docstring for
+    why day-to-day variation within a bucket can't be recovered).
+    Returns (demand_per_bin, access_egress_per_bin), both length n_bins;
+    access_egress_per_bin[t] is a {(start,end): (access_km, egress_km)} dict."""
+    meta = pd.read_csv(meta_csv, parse_dates=["timestamp"]).sort_values("compressed_bin_idx")
+    assert len(meta) >= n_bins, f"meta has {len(meta)} rows, need {n_bins}"
+    cal = pd.read_csv(weather_csv, parse_dates=["date"])
+    is_workday = dict(zip(cal["date"].dt.strftime("%Y%m%d"), cal["day_type"].eq("workday")))
+
+    bucket = pd.read_csv(bucket_csv)
+    bucket["takeoff_grid_id"] = bucket["takeoff_grid_id"].astype(str)
+    bucket["landing_grid_id"] = bucket["landing_grid_id"].astype(str)
+    valid_grid = set(grid_ids)
+    assert set(bucket["takeoff_grid_id"]) <= valid_grid, "bucket_csv references a grid id not in --sites"
+    assert set(bucket["landing_grid_id"]) <= valid_grid, "bucket_csv references a grid id not in --sites"
+
+    by_bucket_demand, by_bucket_access = {}, {}
+    for (hour, day_type), g in bucket.groupby(["hour_of_day", "day_type"]):
+        by_bucket_demand[(hour, day_type)] = [
+            {"start": s, "end": e, "flow": float(f)}
+            for s, e, f in zip(g["takeoff_grid_id"], g["landing_grid_id"], g["avg_trip_count_per_bin"])
+        ]
+        by_bucket_access[(hour, day_type)] = {
+            (s, e): (a, x)
+            for s, e, a, x in zip(g["takeoff_grid_id"], g["landing_grid_id"], g["access_km"], g["egress_km"])
+        }
+
+    demand_per_bin, access_egress_per_bin = [], []
+    for t in range(n_bins):
+        ts = meta.iloc[t]["timestamp"]
+        day_type = "workday" if is_workday.get(ts.strftime("%Y%m%d")) else "offday"
+        key = (ts.hour, day_type)
+        demand_per_bin.append(by_bucket_demand.get(key, []))
+        access_egress_per_bin.append(by_bucket_access.get(key, {}))
+    return demand_per_bin, access_egress_per_bin
 
 
 def build_vertiport_distance_csv(sites_csv, out_csv):
@@ -88,6 +160,7 @@ def compute_most_needed(unmet_demand_local):
 
 def run_iterations(num_bins, vehicle_states, vertiport_states, demand_per_bin, charging_rate,
                     discharge_rate, vertiports, distance_air, charging_rate_per_bin,
+                    ground_speed_per_bin, dwell_min=5.0, access_egress_per_bin=None, log_charging=True,
                     rebalance_interval=0, rebalance_min_reserve=1, rebalance_max_idle_cap=None,
                     predictive_rebalancing=False, predictive_threshold=1.5, predictive_gain=1.0,
                     predictive_window=30, predictive_top_k=3, predictive_max_drain=3):
@@ -100,7 +173,30 @@ def run_iterations(num_bins, vehicle_states, vertiport_states, demand_per_bin, c
     rebalance_log = []
     vertiport_occupancy_log = []
     vertiport_total_count_log = []
+    # one row per bin (O(n_bins), not O(fleet_size x n_bins) like the old
+    # per-vehicle charging_tracker) -- safe to always collect even at large
+    # fleet sizes. LOW_BATTERY_THRESHOLD_PCT=20 is a common EV-industry
+    # "reserve" convention; no project-specific threshold existed already.
+    battery_summary_log = []
+    LOW_BATTERY_THRESHOLD_PCT = 20.0
     flow_history = new_flow_history() if predictive_rebalancing else None
+    # per-origin-vertiport accounting: total demand seen (new + carried-in backlog, before
+    # this bin's assignment) vs. demand still unmet after this bin's assignment. Lets us
+    # compute a per-vertiport assignment_ratio, mirroring the fleet-wide one below but
+    # split by site -- something the fleet-wide time_step_summary can't give us since it
+    # only tracks aggregate totals.
+    site_order_totals = {v: 0.0 for v in vertiports}
+    site_unmet_totals = {v: 0.0 for v in vertiports}
+
+    # Wait-time (queue-age) tracking for unmet demand, purely diagnostic --
+    # doesn't feed back into dispatch (all demand for a given (s,e) pair is
+    # fungible in the LP/dispatch stage; "which units get served" is an
+    # arbitrary bookkeeping choice for reporting, so a FIFO convention
+    # (oldest backlog served first) is used here). unmet_cohorts is keyed by
+    # (s,e) -> list of [flow, age_in_bins], persisted across bins; a cohort's
+    # age counts how many bins it has sat unserved so far.
+    unmet_cohorts = {}
+    WAIT_THRESHOLD_BINS = 10  # 5 hours at 30-min bins; arbitrary "chronic backlog" cutoff for reporting
 
     for t in range(num_bins):
         current_unmet = unmet_demand
@@ -154,17 +250,73 @@ def run_iterations(num_bins, vehicle_states, vertiport_states, demand_per_bin, c
             if demand_agg[(s, e)] - granted_agg.get((s, e), 0.0) > 1e-9
         ]
 
-        unmet_after_assignment, assigned_routes, launched_ids = time_step_path_assignment(
+        unmet_after_assignment, assigned_routes, launched_ids, shortfall_reasons = time_step_path_assignment(
             gurobi_results=total_paths,
             vehicle_states=vehicle_states,
             vertiport_states=vertiport_states,
             discharge_rate=discharge_rate,
             vehicle_movements=vehicle_movements,
             current_step=t,
+            ground_speed_kmh=ground_speed_per_bin[t],
+            dwell_min=dwell_min,
+            access_egress_lookup=access_egress_per_bin[t] if access_egress_per_bin is not None else None,
             debug=False,
         )
 
         unmet_demand = stage1_unmet + unmet_after_assignment
+
+        # Failure-reason breakdown for this bin's total shortfall (sums to `remaining`
+        # below): stage-1 = LP's own vehicle-count-at-origin cap already exhausted
+        # (genuinely too few vehicles ever positioned/assigned to that vertiport,
+        # counting both idle and mid-flight); the other two decompose
+        # time_step_path_assignment's dispatch-stage shortfall (see its docstring).
+        unmet_fleet_insufficient = sum(f for _, _, f in stage1_unmet)
+        unmet_away_flying = shortfall_reasons["away_flying"]
+        unmet_insufficient_battery = shortfall_reasons["insufficient_battery"]
+        unmet_rounding_jitter = shortfall_reasons["rounding_jitter"]
+
+        # --- wait-time (queue-age) bookkeeping, diagnostic only ---
+        new_orders_agg = {}
+        for s, e, f in new_orders:
+            new_orders_agg[(s, e)] = new_orders_agg.get((s, e), 0.0) + f
+        served_agg = {}
+        for r in assigned_routes:
+            served_agg[(r["start"], r["end"])] = served_agg.get((r["start"], r["end"]), 0.0) + r["flow"]
+        age_at_service_weighted_sum = 0.0
+        age_at_service_total_qty = 0.0
+        for (s, e), total_demand_pair in demand_agg.items():
+            cohorts = unmet_cohorts.pop((s, e), [])
+            cohorts.append([new_orders_agg.get((s, e), 0.0), 0])
+            cohorts.sort(key=lambda c: -c[1])  # oldest (largest age) first
+            to_serve = served_agg.get((s, e), 0.0)
+            remaining_cohorts = []
+            for flow, age in cohorts:
+                if to_serve <= 1e-9:
+                    if flow > 1e-9:
+                        remaining_cohorts.append([flow, age])
+                    continue
+                served_here = min(flow, to_serve)
+                age_at_service_weighted_sum += served_here * age
+                age_at_service_total_qty += served_here
+                to_serve -= served_here
+                left = flow - served_here
+                if left > 1e-9:
+                    remaining_cohorts.append([left, age])
+            if remaining_cohorts:
+                unmet_cohorts[(s, e)] = remaining_cohorts
+        for cohorts in unmet_cohorts.values():
+            for c in cohorts:
+                c[1] += 1  # carried into next bin: one bin older
+        mean_age_at_service = (age_at_service_weighted_sum / age_at_service_total_qty
+                                if age_at_service_total_qty > 0 else 0.0)
+        max_backlog_age = max((c[1] for cohorts in unmet_cohorts.values() for c in cohorts), default=0)
+        backlog_over_threshold = sum(c[0] for cohorts in unmet_cohorts.values() for c in cohorts
+                                      if c[1] > WAIT_THRESHOLD_BINS)
+
+        for s, e, f in total_orders:
+            site_order_totals[s] += f
+        for s, e, f in unmet_demand:
+            site_unmet_totals[s] += f
 
         met_qty = sum(route["flow"] for route in assigned_routes)
         total_demand = sum(f for _, _, f in total_orders)
@@ -235,30 +387,91 @@ def run_iterations(num_bins, vehicle_states, vertiport_states, demand_per_bin, c
             "iteration_cost": iteration_cost,
             "cumulative_cost": cumulative_cost,
             "n_vehicles_in_service": sum(vs["in_service"] for vs in vehicle_states.values()),
+            "unmet_fleet_insufficient": unmet_fleet_insufficient,
+            "unmet_away_flying": unmet_away_flying,
+            "unmet_insufficient_battery": unmet_insufficient_battery,
+            "unmet_rounding_jitter": unmet_rounding_jitter,
+            "mean_age_at_service_bins": mean_age_at_service,
+            "max_backlog_age_bins": max_backlog_age,
+            "backlog_over_threshold": backlog_over_threshold,
         })
         for route in assigned_routes:
             assigned_routes_log.append({"time_step": t, **route})
 
         charging_and_battery_update(
             vehicle_states, time_interval=30, charging_rate=charging_rate_per_bin,
-            current_step=t, charging_tracker=charging_log_tracker,
+            current_step=t, charging_tracker=charging_log_tracker, log_enabled=log_charging,
         )
+
+        batteries = [vs["battery"] for vs in vehicle_states.values()]
+        n_low = sum(1 for b in batteries if b < LOW_BATTERY_THRESHOLD_PCT)
+        # n_charging: idle (in_service==0) and not full -- matches battery_charging.py's own
+        # "charging" flag condition, so this is literally how many vehicles are plugged in
+        # and gaining charge this bin (charging utilization = n_charging / fleet_size).
+        n_charging = sum(1 for vs in vehicle_states.values() if vs["in_service"] == 0 and vs["battery"] < 100.0)
+        # energy consumed this bin, in % -battery units (no kWh capacity is defined anywhere
+        # in this project -- battery is a pure 0-100% quantity, so "energy" here is only ever
+        # reported in that unit, not kWh): sum of required_battery over all vehicles actually
+        # dispatched this bin, recomputed from assigned_routes' own (flow, distance) since
+        # task_assignment.py already discharges each dispatched vehicle by exactly this amount.
+        energy_consumed_pct_this_bin = sum(
+            route["flow"] * battery_consumption_required(route["distance"], discharge_rate)
+            for route in assigned_routes
+        )
+        battery_summary_log.append({
+            "time_step": t,
+            "low_battery_ratio": n_low / len(batteries) if batteries else 0.0,
+            "low_battery_count": n_low,
+            "mean_battery_pct": sum(batteries) / len(batteries) if batteries else 0.0,
+            "n_charging": n_charging,
+            "charging_utilization": n_charging / len(batteries) if batteries else 0.0,
+            "energy_consumed_pct_this_bin": energy_consumed_pct_this_bin,
+        })
 
         if t % 100 == 0:
             print(f"[bin {t}/{num_bins}] met={met_qty:.0f} unmet={remaining:.0f} in_service={time_step_summary_records[-1]['n_vehicles_in_service']} rebalanced={len(moves)}")
 
+    site_assignment_stats = [
+        {"grid_id": v, "total_orders": site_order_totals[v], "total_unmet": site_unmet_totals[v]}
+        for v in vertiports
+    ]
+
     return (time_step_summary_records, cumulative_cost, assigned_routes_log, charging_log_tracker,
-            rebalance_log, vertiport_occupancy_log, vertiport_total_count_log)
+            rebalance_log, vertiport_occupancy_log, vertiport_total_count_log, site_assignment_stats,
+            battery_summary_log)
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--sites", type=str, default=str(DATA_DIR / "selected_sites_kmeans_K30.csv"))
     ap.add_argument("--od-npz", type=str, default=str(OUT_DIR / "shanghai_od_kmeans30_30min_1channel.npz"))
+    ap.add_argument("--demand-source", choices=["intracell", "full_dynspeed"], default="intracell",
+                     help="intracell (default, unchanged behavior): --od-npz's ~184K-trip subset "
+                          "(only trips whose origin AND destination fall inside the vertiport's own grid "
+                          "cell), fixed ~0.4km access/egress approximation. full_dynspeed: "
+                          "build_dynspeed_full_demand.py's full-grid routed demand (~11.6M trips/month, "
+                          "real km-scale access/egress distances + the routing decisions dynamic ground "
+                          "speed already influenced) -- see --demand-bucket-csv")
+    ap.add_argument("--demand-bucket-csv", type=str, default=str(DYNSPEED_DEMAND_BUCKET_CSV),
+                     help="only used when --demand-source=full_dynspeed")
+    ap.add_argument("--speed-bucket-csv", type=str, default=str(SPEED_BUCKET_CSV),
+                     help="48-bucket ground-speed lookup used for access/egress time; default is the "
+                          "model-predicted mean table. Pass an alternate (e.g. a p10 rush-hour stress "
+                          "variant) to test sensitivity.")
+    ap.add_argument("--skip-charging-log", action="store_true",
+                     help="don't accumulate the per-vehicle-per-bin charging_log_<tag>.csv detail "
+                          "(battery math is unaffected, only the diagnostic log is skipped). This dict "
+                          "grows O(fleet_size x n_bins) -- at large fleet sizes (10K+ vehicles) it can "
+                          "reach tens of millions of entries and exceed a constrained environment's "
+                          "memory limit well before the simulation does anything heavy. Not needed for "
+                          "service-rate figures (those come from time_step_summary, not this log).")
     ap.add_argument("--n-bins", type=int, default=None, help="limit to first N bins (default: all 1392)")
     ap.add_argument("--vehicles-per-vertiport", type=int, default=5)
     ap.add_argument("--discharge-rate", type=float, default=1.0, help="%% battery per km flown")
     ap.add_argument("--charging-rate-per-bin", type=float, default=7.0, help="%% battery gained per 30-min bin while standby")
+    ap.add_argument("--dwell-min", type=float, default=5.0,
+                     help="fixed boarding/security overhead per ground leg (access + egress), minutes; "
+                          "no ground-truth data exists for this, it's an assumption -- see task_assignment.py")
     ap.add_argument("--rebalance-interval", type=int, default=0,
                      help="reposition idle vehicles toward backlogged vertiports every N bins (0 = disabled)")
     ap.add_argument("--rebalance-min-reserve", type=int, default=1,
@@ -288,7 +501,7 @@ def main():
     args = ap.parse_args()
 
     SIM_OUT_DIR.mkdir(parents=True, exist_ok=True)
-    distance_csv = SIM_OUT_DIR / "vertiport_distance_km.csv"
+    distance_csv = SIM_OUT_DIR / f"vertiport_distance_km.{args.tag}.tmp.csv"
     grid_ids = build_vertiport_distance_csv(args.sites, distance_csv)
     set_distance_data(distance_csv)
     distance_air = {
@@ -296,17 +509,32 @@ def main():
         for a in grid_ids for b in grid_ids if a != b
     }
 
-    demand_per_bin = load_demand_per_bin(args.od_npz, grid_ids)
-    n_bins = args.n_bins or len(demand_per_bin)
-    demand_per_bin = demand_per_bin[:n_bins]
+    if args.demand_source == "full_dynspeed":
+        n_bins = args.n_bins or 1392
+        demand_per_bin, access_egress_per_bin = load_demand_and_access_per_bin(
+            n_bins, grid_ids, bucket_csv=args.demand_bucket_csv)
+        total_demand_check = sum(f for rows in demand_per_bin for _, _, f in
+                                  ((r["start"], r["end"], r["flow"]) for r in rows))
+        print(f"demand_source=full_dynspeed  bucket_csv={args.demand_bucket_csv}  "
+              f"total real demand across {n_bins} bins: {total_demand_check:.0f}")
+    else:
+        demand_per_bin = load_demand_per_bin(args.od_npz, grid_ids)
+        n_bins = args.n_bins or len(demand_per_bin)
+        demand_per_bin = demand_per_bin[:n_bins]
+        access_egress_per_bin = None
     print(f"vertiports={len(grid_ids)}  bins={n_bins}  fleet={args.vehicles_per_vertiport * len(grid_ids)} vehicles")
+
+    ground_speed_per_bin = build_ground_speed_per_bin(n_bins, speed_bucket_csv=args.speed_bucket_csv)
+    print(f"ground speed (dynamic, per-bucket): min={ground_speed_per_bin.min():.2f}  "
+          f"max={ground_speed_per_bin.max():.2f}  mean={ground_speed_per_bin.mean():.2f} km/h")
 
     vehicles = [f"V{i}" for i in range(1, args.vehicles_per_vertiport * len(grid_ids) + 1)]
     vehicle_states, vertiport_states = initialize_states_with_time(vehicles, grid_ids, args.vehicles_per_vertiport)
 
     start = time.time()
     (summary, cumulative_cost, assigned_routes_log, charging_log, rebalance_log,
-     vertiport_occupancy_log, vertiport_total_count_log) = run_iterations(
+     vertiport_occupancy_log, vertiport_total_count_log, site_assignment_stats,
+     battery_summary_log) = run_iterations(
         num_bins=n_bins,
         vehicle_states=vehicle_states,
         vertiport_states=vertiport_states,
@@ -316,6 +544,10 @@ def main():
         vertiports=grid_ids,
         distance_air=distance_air,
         charging_rate_per_bin=args.charging_rate_per_bin,
+        ground_speed_per_bin=ground_speed_per_bin,
+        dwell_min=args.dwell_min,
+        access_egress_per_bin=access_egress_per_bin,
+        log_charging=not args.skip_charging_log,
         rebalance_interval=args.rebalance_interval,
         rebalance_min_reserve=args.rebalance_min_reserve,
         rebalance_max_idle_cap=(
@@ -338,7 +570,13 @@ def main():
     pd.DataFrame(rebalance_log).to_csv(SIM_OUT_DIR / f"rebalance_log_{args.tag}.csv", index=False)
     pd.DataFrame(vertiport_occupancy_log).to_csv(SIM_OUT_DIR / f"vertiport_occupancy_{args.tag}.csv", index=False)
     pd.DataFrame(vertiport_total_count_log).to_csv(SIM_OUT_DIR / f"vertiport_total_count_{args.tag}.csv", index=False)
-    export_charging_log(charging_log, SIM_OUT_DIR / f"charging_log_{args.tag}.csv")
+    pd.DataFrame(battery_summary_log).to_csv(SIM_OUT_DIR / f"battery_summary_{args.tag}.csv", index=False)
+    site_stats_df = pd.DataFrame(site_assignment_stats)
+    site_stats_df["total_met"] = site_stats_df["total_orders"] - site_stats_df["total_unmet"]
+    site_stats_df["assignment_ratio"] = site_stats_df["total_met"] / site_stats_df["total_orders"].replace(0, pd.NA)
+    site_stats_df.to_csv(SIM_OUT_DIR / f"vertiport_assignment_ratio_{args.tag}.csv", index=False)
+    if not args.skip_charging_log:
+        export_charging_log(charging_log, SIM_OUT_DIR / f"charging_log_{args.tag}.csv")
 
     total_met = df["met_demand"].sum()
     total_unmet = df["unmet_demand"].sum()
@@ -359,6 +597,8 @@ def main():
         "fleet_size": args.vehicles_per_vertiport * len(grid_ids),
         "discharge_rate": args.discharge_rate,
         "charging_rate_per_bin": args.charging_rate_per_bin,
+        "dwell_min": args.dwell_min,
+        "demand_source": args.demand_source,
         "rebalance_interval": args.rebalance_interval,
         "rebalance_min_reserve": args.rebalance_min_reserve,
         "predictive_rebalancing": args.predictive_rebalancing,
@@ -376,6 +616,7 @@ def main():
     }])
     summary_row.to_csv(SIM_OUT_DIR / f"run_summary_{args.tag}.csv", index=False)
     print(f"saved -> {SIM_OUT_DIR / f'run_summary_{args.tag}.csv'}")
+    Path(distance_csv).unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

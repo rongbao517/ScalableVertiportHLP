@@ -1,0 +1,25 @@
+vertiports=30  bins=1392  fleet=150 vehicles
+Restricted license - for non-production use only - expires 2027-11-29
+[bin 0/1392] met=45 unmet=15 in_service=45 rebalanced=0
+[bin 100/1392] met=22 unmet=2908 in_service=22 rebalanced=0
+[bin 200/1392] met=13 unmet=6375 in_service=13 rebalanced=0
+[bin 300/1392] met=11 unmet=11166 in_service=11 rebalanced=0
+[bin 400/1392] met=27 unmet=17174 in_service=27 rebalanced=0
+[bin 500/1392] met=9 unmet=24211 in_service=9 rebalanced=0
+[bin 600/1392] met=11 unmet=30657 in_service=11 rebalanced=0
+[bin 700/1392] met=11 unmet=38163 in_service=11 rebalanced=0
+[bin 800/1392] met=10 unmet=45879 in_service=10 rebalanced=0
+[bin 900/1392] met=16 unmet=52280 in_service=16 rebalanced=0
+[bin 1000/1392] met=23 unmet=58869 in_service=23 rebalanced=0
+[bin 1100/1392] met=15 unmet=65634 in_service=15 rebalanced=0
+[bin 1200/1392] met=5 unmet=71725 in_service=5 rebalanced=0
+[bin 1300/1392] met=1 unmet=78728 in_service=1 rebalanced=0
+simulation finished in 7.5s
+****************************************
+vehicles_per_vertiport=5  fleet_size=150
+total real demand introduced: 109287
+total met: 24193  total unmet (per-bin, incl. carryover): 53960134
+assignment_ratio (分配率, met/(met+unmet)): 0.0004
+big_picture_assignment_ratio (met/real_flow): 0.2214
+cumulative operating+transport cost: 1863745.9
+saved -> /home/b5by/zhirong.b5by/work/shanghai_new/outputs/fleet_sim/run_summary_fleet5.csv

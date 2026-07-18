@@ -230,6 +230,14 @@ def main():
     pred[pred < 0] = 0
     true = np.expm1(true_log)
     nz = true > 1e-5
+
+    mse_log = np.mean((pred_log[nz] - true_log[nz]) ** 2)
+    rmse_log = np.sqrt(mse_log)
+    mae_log = np.mean(np.abs(pred_log[nz] - true_log[nz]))
+    mape_log = np.mean(np.abs((pred_log[nz] - true_log[nz]) / true_log[nz])) * 100
+    metrics_log = dict(MSE=float(mse_log), RMSE=float(rmse_log), MAE=float(mae_log), MAPE=float(mape_log))
+    print("test metrics (log1p space):", metrics_log)
+
     mse = np.mean((pred[nz] - true[nz]) ** 2)
     rmse = np.sqrt(mse)
     mae = np.mean(np.abs(pred[nz] - true[nz]))
@@ -239,7 +247,7 @@ def main():
     metrics = dict(MSE=float(mse), RMSE=float(rmse), MAE=float(mae), MAPE=float(mape), R2=float(r2), PCC=float(pcc))
     print("test metrics (original space):", metrics)
     with open(save_dir / "test_metrics.json", "w") as f:
-        json.dump(metrics, f, indent=2)
+        json.dump({"log_space": metrics_log, "original_space": metrics}, f, indent=2)
 
     print("saved run ->", save_dir)
 

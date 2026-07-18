@@ -1,2 +1,2 @@
-vehicles_per_vertiport,fleet_size,discharge_rate,charging_rate_per_bin,rebalance_interval,rebalance_min_reserve,n_rebalance_moves_total,n_bins,total_real_demand,total_met,total_unmet,assignment_ratio,big_picture_assignment_ratio,cumulative_cost
-20,600,1.0,7.0,8,1,7119,1392,32412.0,32393,32222.0,0.5013232221620367,0.9994137973590028,5572748.552776163
+vehicles_per_vertiport,fleet_size,discharge_rate,charging_rate_per_bin,rebalance_interval,rebalance_min_reserve,predictive_rebalancing,predictive_threshold,predictive_gain,predictive_window,n_rebalance_moves_total,n_bins,total_real_demand,total_met,total_unmet,assignment_ratio,big_picture_assignment_ratio,cumulative_cost
+20,600,1.0,7.0,8,1,False,1.5,1.0,30,17416,1392,109287.0,109283,39855.0,0.7327642854269201,0.999963399123409,7722033.2424690835
