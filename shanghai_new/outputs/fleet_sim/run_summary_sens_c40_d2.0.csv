@@ -1,0 +1,2 @@
+vehicles_per_vertiport,fleet_size,discharge_rate,charging_rate_per_bin,dwell_min,demand_source,rebalance_interval,rebalance_min_reserve,predictive_rebalancing,predictive_threshold,predictive_gain,predictive_window,n_rebalance_moves_total,n_bins,total_real_demand,total_met,total_unmet,assignment_ratio,big_picture_assignment_ratio,cumulative_cost
+700,21000,2.0,40.0,5.0,full_dynspeed,1,1,True,1.5,1.0,30,668337,500,4092340.666666667,4091374,635183.4642857166,0.8656139338016688,0.9997637863644783,174709464.3107239
