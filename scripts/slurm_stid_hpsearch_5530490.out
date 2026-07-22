@@ -1,0 +1,48 @@
+device: cuda:0
+[trial 00] val_loss=0.1399  test_R2=0.9328  params=49378  time=10.8s  cfg={'hidden': 96, 'embed_dim': 32, 'n_layers': 1, 'dropout': 0.15, 'lr': 0.002, 'weight_decay': 1e-05, 'batchsize': 64}
+[trial 01] val_loss=0.1368  test_R2=0.9227  params=44322  time=8.7s  cfg={'hidden': 64, 'embed_dim': 32, 'n_layers': 3, 'dropout': 0.3, 'lr': 0.0005, 'weight_decay': 0.0001, 'batchsize': 32}
+[trial 02] val_loss=0.1403  test_R2=0.9309  params=23250  time=3.1s  cfg={'hidden': 64, 'embed_dim': 16, 'n_layers': 1, 'dropout': 0.3, 'lr': 0.001, 'weight_decay': 0.0001, 'batchsize': 128}
+[trial 03] val_loss=0.1400  test_R2=0.9304  params=17306  time=3.8s  cfg={'hidden': 48, 'embed_dim': 24, 'n_layers': 1, 'dropout': 0.05, 'lr': 0.002, 'weight_decay': 1e-05, 'batchsize': 64}
+[trial 04] val_loss=0.1351  test_R2=0.9294  params=17018  time=11.2s  cfg={'hidden': 32, 'embed_dim': 24, 'n_layers': 4, 'dropout': 0.15, 'lr': 0.002, 'weight_decay': 0.0001, 'batchsize': 32}
+[trial 05] val_loss=0.1406  test_R2=0.9276  params=86626  time=3.6s  cfg={'hidden': 96, 'embed_dim': 32, 'n_layers': 3, 'dropout': 0.05, 'lr': 0.002, 'weight_decay': 1e-06, 'batchsize': 32}
+[trial 06] val_loss=0.1392  test_R2=0.9302  params=96298  time=6.1s  cfg={'hidden': 96, 'embed_dim': 8, 'n_layers': 4, 'dropout': 0.15, 'lr': 0.0005, 'weight_decay': 0.0001, 'batchsize': 64}
+[trial 07] val_loss=0.1434  test_R2=0.9056  params=11346  time=5.9s  cfg={'hidden': 32, 'embed_dim': 16, 'n_layers': 2, 'dropout': 0.1, 'lr': 0.0005, 'weight_decay': 0.0001, 'batchsize': 64}
+[trial 08] val_loss=0.1443  test_R2=0.9158  params=12010  time=6.8s  cfg={'hidden': 32, 'embed_dim': 8, 'n_layers': 3, 'dropout': 0.3, 'lr': 0.001, 'weight_decay': 1e-06, 'batchsize': 64}
+[trial 09] val_loss=0.1443  test_R2=0.9148  params=37674  time=4.1s  cfg={'hidden': 64, 'embed_dim': 8, 'n_layers': 3, 'dropout': 0.3, 'lr': 0.0005, 'weight_decay': 0.0001, 'batchsize': 128}
+[trial 10] val_loss=0.1367  test_R2=0.9385  params=27682  time=3.1s  cfg={'hidden': 64, 'embed_dim': 32, 'n_layers': 1, 'dropout': 0.3, 'lr': 0.001, 'weight_decay': 1e-05, 'batchsize': 128}
+[trial 11] val_loss=0.1424  test_R2=0.9198  params=22010  time=3.6s  cfg={'hidden': 48, 'embed_dim': 24, 'n_layers': 2, 'dropout': 0.1, 'lr': 0.0005, 'weight_decay': 1e-06, 'batchsize': 128}
+[trial 12] val_loss=0.1378  test_R2=0.9245  params=27682  time=4.1s  cfg={'hidden': 64, 'embed_dim': 32, 'n_layers': 1, 'dropout': 0.05, 'lr': 0.002, 'weight_decay': 1e-06, 'batchsize': 32}
+[trial 13] val_loss=0.1403  test_R2=0.9289  params=14122  time=14.0s  cfg={'hidden': 32, 'embed_dim': 8, 'n_layers': 4, 'dropout': 0.3, 'lr': 0.001, 'weight_decay': 0.0001, 'batchsize': 32}
+[trial 14] val_loss=0.1385  test_R2=0.9288  params=28546  time=4.0s  cfg={'hidden': 48, 'embed_dim': 32, 'n_layers': 3, 'dropout': 0.2, 'lr': 0.001, 'weight_decay': 0.0001, 'batchsize': 128}
+[trial 15] val_loss=0.1438  test_R2=0.9169  params=37674  time=4.1s  cfg={'hidden': 64, 'embed_dim': 8, 'n_layers': 3, 'dropout': 0.3, 'lr': 0.0005, 'weight_decay': 1e-05, 'batchsize': 128}
+[trial 16] val_loss=0.1422  test_R2=0.9039  params=31570  time=4.8s  cfg={'hidden': 64, 'embed_dim': 16, 'n_layers': 2, 'dropout': 0.05, 'lr': 0.002, 'weight_decay': 1e-05, 'batchsize': 32}
+[trial 17] val_loss=0.1378  test_R2=0.9355  params=22010  time=7.2s  cfg={'hidden': 48, 'embed_dim': 24, 'n_layers': 2, 'dropout': 0.15, 'lr': 0.001, 'weight_decay': 1e-06, 'batchsize': 32}
+[trial 18] val_loss=0.1387  test_R2=0.9315  params=15474  time=3.0s  cfg={'hidden': 48, 'embed_dim': 16, 'n_layers': 1, 'dropout': 0.3, 'lr': 0.002, 'weight_decay': 0.0001, 'batchsize': 128}
+[trial 19] val_loss=0.1403  test_R2=0.9283  params=7786  time=8.9s  cfg={'hidden': 32, 'embed_dim': 8, 'n_layers': 1, 'dropout': 0.1, 'lr': 0.002, 'weight_decay': 0.0001, 'batchsize': 32}
+[trial 20] val_loss=0.1400  test_R2=0.9323  params=77674  time=6.4s  cfg={'hidden': 96, 'embed_dim': 8, 'n_layers': 3, 'dropout': 0.05, 'lr': 0.0005, 'weight_decay': 0.0001, 'batchsize': 32}
+[trial 21] val_loss=0.1394  test_R2=0.9329  params=15474  time=9.2s  cfg={'hidden': 48, 'embed_dim': 16, 'n_layers': 1, 'dropout': 0.2, 'lr': 0.0005, 'weight_decay': 0.0001, 'batchsize': 32}
+[trial 22] val_loss=0.1398  test_R2=0.9330  params=12130  time=9.0s  cfg={'hidden': 32, 'embed_dim': 32, 'n_layers': 1, 'dropout': 0.15, 'lr': 0.0005, 'weight_decay': 1e-06, 'batchsize': 32}
+[trial 23] val_loss=0.1393  test_R2=0.9356  params=50426  time=6.9s  cfg={'hidden': 64, 'embed_dim': 24, 'n_layers': 4, 'dropout': 0.1, 'lr': 0.0005, 'weight_decay': 0.0001, 'batchsize': 64}
+[trial 24] val_loss=0.1458  test_R2=0.9218  params=14122  time=4.5s  cfg={'hidden': 32, 'embed_dim': 8, 'n_layers': 4, 'dropout': 0.1, 'lr': 0.001, 'weight_decay': 1e-05, 'batchsize': 128}
+[trial 25] val_loss=0.1407  test_R2=0.9130  params=62034  time=3.6s  cfg={'hidden': 96, 'embed_dim': 16, 'n_layers': 2, 'dropout': 0.05, 'lr': 0.002, 'weight_decay': 1e-06, 'batchsize': 32}
+[trial 26] val_loss=0.1379  test_R2=0.9331  params=25466  time=6.3s  cfg={'hidden': 64, 'embed_dim': 24, 'n_layers': 1, 'dropout': 0.3, 'lr': 0.001, 'weight_decay': 0.0001, 'batchsize': 32}
+[trial 27] val_loss=0.1382  test_R2=0.9364  params=18466  time=4.5s  cfg={'hidden': 32, 'embed_dim': 32, 'n_layers': 4, 'dropout': 0.3, 'lr': 0.002, 'weight_decay': 1e-05, 'batchsize': 128}
+[trial 28] val_loss=0.1373  test_R2=0.9290  params=44322  time=4.2s  cfg={'hidden': 64, 'embed_dim': 32, 'n_layers': 3, 'dropout': 0.1, 'lr': 0.002, 'weight_decay': 0.0001, 'batchsize': 32}
+[trial 29] val_loss=0.1424  test_R2=0.9141  params=77674  time=4.2s  cfg={'hidden': 96, 'embed_dim': 8, 'n_layers': 3, 'dropout': 0.05, 'lr': 0.002, 'weight_decay': 1e-05, 'batchsize': 32}
+[trial 30] val_loss=0.1375  test_R2=0.9293  params=28546  time=6.9s  cfg={'hidden': 48, 'embed_dim': 32, 'n_layers': 3, 'dropout': 0.3, 'lr': 0.001, 'weight_decay': 0.0001, 'batchsize': 64}
+[trial 31] val_loss=0.1376  test_R2=0.9327  params=31418  time=6.6s  cfg={'hidden': 48, 'embed_dim': 24, 'n_layers': 4, 'dropout': 0.2, 'lr': 0.002, 'weight_decay': 1e-06, 'batchsize': 32}
+[trial 32] val_loss=0.1397  test_R2=0.9149  params=22010  time=5.9s  cfg={'hidden': 48, 'embed_dim': 24, 'n_layers': 2, 'dropout': 0.1, 'lr': 0.0005, 'weight_decay': 0.0001, 'batchsize': 64}
+[trial 33] val_loss=0.1391  test_R2=0.9192  params=49378  time=2.6s  cfg={'hidden': 96, 'embed_dim': 32, 'n_layers': 1, 'dropout': 0.2, 'lr': 0.002, 'weight_decay': 0.0001, 'batchsize': 64}
+[trial 34] val_loss=0.1404  test_R2=0.9251  params=15570  time=10.2s  cfg={'hidden': 32, 'embed_dim': 16, 'n_layers': 4, 'dropout': 0.05, 'lr': 0.001, 'weight_decay': 0.0001, 'batchsize': 32}
+[trial 35] val_loss=0.1371  test_R2=0.9302  params=49378  time=3.2s  cfg={'hidden': 96, 'embed_dim': 32, 'n_layers': 1, 'dropout': 0.05, 'lr': 0.001, 'weight_decay': 1e-05, 'batchsize': 64}
+[trial 36] val_loss=0.1422  test_R2=0.9248  params=96298  time=5.6s  cfg={'hidden': 96, 'embed_dim': 8, 'n_layers': 4, 'dropout': 0.1, 'lr': 0.002, 'weight_decay': 0.0001, 'batchsize': 32}
+[trial 37] val_loss=0.1419  test_R2=0.9362  params=27754  time=10.6s  cfg={'hidden': 48, 'embed_dim': 8, 'n_layers': 4, 'dropout': 0.2, 'lr': 0.001, 'weight_decay': 1e-06, 'batchsize': 32}
+[trial 38] val_loss=0.1530  test_R2=0.8991  params=7786  time=3.0s  cfg={'hidden': 32, 'embed_dim': 8, 'n_layers': 1, 'dropout': 0.1, 'lr': 0.0005, 'weight_decay': 0.0001, 'batchsize': 128}
+[trial 39] val_loss=0.1398  test_R2=0.9308  params=26714  time=6.9s  cfg={'hidden': 48, 'embed_dim': 24, 'n_layers': 3, 'dropout': 0.1, 'lr': 0.0005, 'weight_decay': 1e-05, 'batchsize': 64}
+
+=== SEARCH DONE ===
+best by val_loss: {'hidden': 32, 'embed_dim': 24, 'n_layers': 4, 'dropout': 0.15, 'lr': 0.002, 'weight_decay': 0.0001, 'batchsize': 32, 'val_loss': 0.1351121904121505, 'n_params': 17018, 'time_s': 11.2, 'R2': 0.9293636679649353, 'PCC': 0.965142426920143, 'MAE': 4.769906520843506}
+saved leaderboard -> /home/b5by/zhirong.b5by/work/shanghai_new/outputs/stid_hparam_search_leaderboard.csv
+
+saved winning run -> /home/b5by/zhirong.b5by/work/shanghai_new/outputs/save_shanghai_demand_gru/260707090051_189364
+test metrics: {'MSE': 92.04331970214844, 'RMSE': 9.593920707702637, 'MAE': 4.769906520843506, 'MAPE': 33.88457107543945, 'R2': 0.9293636679649353, 'PCC': 0.965142426920143}

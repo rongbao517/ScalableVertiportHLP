@@ -1,0 +1,36 @@
+# Raw trip data and large generated outputs -- reproducible from the scripts
+# in this repo, intentionally not version-controlled (matches the same
+# code+small-results-only scope used for this project's GitHub upload).
+data/raw/
+data/full_grid_od_pairs_by_bucket_202504.csv
+data/full_grid_od_pairs_202504.csv
+
+outputs/**/*.csv
+outputs/**/*.npz
+outputs/**/*.npy
+outputs/**/*.pt
+outputs/**/*.png
+outputs/**/*.jpg
+outputs/**/*.jpeg
+outputs/**/*.pdf
+outputs/**/*.log
+outputs/**/*.json
+outputs/fleet_sim/_sweep_tmp/
+
+# Model-training checkpoint archives (demand/speed/OD forecasting models,
+# unrelated to this session's fleet-sim/rebalancing work) -- dozens of
+# timestamped run directories, all reproducible by rerunning the training
+# scripts in scripts/.
+outputs/save_shanghai_demand_gru/
+outputs/save_shanghai_od_astt/
+outputs/save_shanghai_speed_gru/
+
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Crash artifacts (e.g. the resource-contention crashes investigated
+# 2026-07-22 -- see positioning_lp.py/robustness_battery.py history)
+core
+core.*
+*.core

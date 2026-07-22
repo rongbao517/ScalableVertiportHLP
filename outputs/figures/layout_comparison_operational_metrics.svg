@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1208" height="416" viewBox="0 0 1208 416" font-family="Noto Sans CJK SC, sans-serif">
+<rect x="0" y="0" width="1208" height="416" fill="#fcfcfb"/>
+<text x="20" y="30" font-size="20" font-weight="650" fill="#0b0b0b">Operational Metrics at Equilibrium — Three Layouts</text>
+<text x="20" y="50" font-size="12.5" fill="#52514e">All at the converged closed-loop iteration, fleet=7500, unified operating config.</text>
+<text x="20" y="68" font-size="12.5" fill="#52514e">Left: per-vertiport assignment ratio (30 sites, sorted). Middle: fleet-wide low-battery share. Right: fleet utilization (vehicles in service / 7500).</text>
+<line x1="20" y1="92" x2="36" y2="92" stroke="#2a78d6" stroke-width="2.5"/>
+<text x="42" y="96" font-size="12" fill="#52514e">Oracle baseline</text>
+<line x1="280" y1="92" x2="296" y2="92" stroke="#eb6834" stroke-width="2.5"/>
+<text x="302" y="96" font-size="12" fill="#52514e">Mode-choice candidate</text>
+<line x1="540" y1="92" x2="556" y2="92" stroke="#4a3aa7" stroke-width="2.5"/>
+<text x="562" y="96" font-size="12" fill="#52514e">Threshold control</text>
+<g transform="translate(20,120)">
+<rect x="0" y="0" width="380" height="260" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="14" y="20" font-size="13" font-weight="600" fill="#0b0b0b">Per-vertiport assignment ratio (sorted, 30 sites)</text>
+<g transform="translate(0,10)">
+<rect x="52" y="16" width="312" height="210" fill="#fcfcfb"/>
+<line x1="52" y1="226.0" x2="364" y2="226.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="229.0" font-size="9" fill="#83817a" text-anchor="end">0.0</text>
+<line x1="52" y1="173.5" x2="364" y2="173.5" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="176.5" font-size="9" fill="#83817a" text-anchor="end">0.2</text>
+<line x1="52" y1="121.0" x2="364" y2="121.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="124.0" font-size="9" fill="#83817a" text-anchor="end">0.5</text>
+<line x1="52" y1="68.5" x2="364" y2="68.5" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="71.5" font-size="9" fill="#83817a" text-anchor="end">0.8</text>
+<line x1="52" y1="16.0" x2="364" y2="16.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="19.0" font-size="9" fill="#83817a" text-anchor="end">1.0</text>
+<text x="52.0" y="248" font-size="9" fill="#83817a" text-anchor="middle">rank 1</text>
+<text x="114.4" y="248" font-size="9" fill="#83817a" text-anchor="middle">rank 7</text>
+<text x="176.8" y="248" font-size="9" fill="#83817a" text-anchor="middle">rank 13</text>
+<text x="239.2" y="248" font-size="9" fill="#83817a" text-anchor="middle">rank 18</text>
+<text x="301.6" y="248" font-size="9" fill="#83817a" text-anchor="middle">rank 24</text>
+<text x="364.0" y="248" font-size="9" fill="#83817a" text-anchor="middle">rank 30</text>
+<path d="M52.0,36.0 L62.8,38.2 L73.5,39.4 L84.3,41.6 L95.0,42.8 L105.8,43.4 L116.6,44.0 L127.3,44.6 L138.1,44.6 L148.8,46.3 L159.6,46.3 L170.3,46.9 L181.1,48.6 L191.9,50.4 L202.6,51.0 L213.4,51.5 L224.1,52.4 L234.9,56.7 L245.7,58.4 L256.4,59.3 L267.2,60.8 L277.9,60.9 L288.7,82.9 L299.4,88.7 L310.2,90.2 L321.0,107.6 L331.7,108.0 L342.5,108.7 L353.2,158.6 L364.0,186.1" fill="none" stroke="#2a78d6" stroke-width="1.8"/>
+<path d="M52.0,31.3 L62.8,37.2 L73.5,37.8 L84.3,38.1 L95.0,40.1 L105.8,40.1 L116.6,40.7 L127.3,42.6 L138.1,45.0 L148.8,45.4 L159.6,46.0 L170.3,47.1 L181.1,47.5 L191.9,48.0 L202.6,51.8 L213.4,55.2 L224.1,55.5 L234.9,56.7 L245.7,62.3 L256.4,64.0 L267.2,64.4 L277.9,69.9 L288.7,71.8 L299.4,86.6 L310.2,88.2 L321.0,91.8 L331.7,101.9 L342.5,108.1 L353.2,153.1 L364.0,180.9" fill="none" stroke="#eb6834" stroke-width="1.8"/>
+<path d="M52.0,36.3 L62.8,36.7 L73.5,36.8 L84.3,38.0 L95.0,40.3 L105.8,41.7 L116.6,41.9 L127.3,42.2 L138.1,42.9 L148.8,43.3 L159.6,48.2 L170.3,49.1 L181.1,50.0 L191.9,50.6 L202.6,54.8 L213.4,57.8 L224.1,59.8 L234.9,60.1 L245.7,60.2 L256.4,65.5 L267.2,67.3 L277.9,75.3 L288.7,83.6 L299.4,102.0 L310.2,103.4 L321.0,108.5 L331.7,160.6 L342.5,164.6 L353.2,181.5 L364.0,183.6" fill="none" stroke="#4a3aa7" stroke-width="1.8"/>
+</g>
+</g>
+<g transform="translate(416,120)">
+<rect x="0" y="0" width="380" height="260" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="14" y="20" font-size="13" font-weight="600" fill="#0b0b0b">Low-battery fleet share over time (10-bin smoothed)</text>
+<g transform="translate(0,10)">
+<rect x="52" y="16" width="312" height="210" fill="#fcfcfb"/>
+<line x1="52" y1="226.0" x2="364" y2="226.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="229.0" font-size="9" fill="#83817a" text-anchor="end">0.0%</text>
+<line x1="52" y1="173.5" x2="364" y2="173.5" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="176.5" font-size="9" fill="#83817a" text-anchor="end">3.1%</text>
+<line x1="52" y1="121.0" x2="364" y2="121.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="124.0" font-size="9" fill="#83817a" text-anchor="end">6.3%</text>
+<line x1="52" y1="68.5" x2="364" y2="68.5" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="71.5" font-size="9" fill="#83817a" text-anchor="end">9.4%</text>
+<line x1="52" y1="16.0" x2="364" y2="16.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="19.0" font-size="9" fill="#83817a" text-anchor="end">12.5%</text>
+<text x="52.0" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=0</text>
+<text x="114.4" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=98</text>
+<text x="176.8" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=196</text>
+<text x="239.2" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=294</text>
+<text x="301.6" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=392</text>
+<text x="364.0" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=490</text>
+<path d="M52.0,226.0 L58.4,223.2 L64.7,214.4 L71.1,211.4 L77.5,174.4 L83.8,195.4 L90.2,209.5 L96.6,202.2 L102.9,189.9 L109.3,98.8 L115.7,195.1 L122.0,208.1 L128.4,200.5 L134.8,170.1 L141.1,102.5 L147.5,202.5 L153.9,212.0 L160.2,195.9 L166.6,169.5 L173.0,160.4 L179.3,208.2 L185.7,206.9 L192.1,189.8 L198.4,126.0 L204.8,161.4 L211.2,211.9 L217.6,206.9 L223.9,192.3 L230.3,124.9 L236.7,191.0 L243.0,210.8 L249.4,199.2 L255.8,189.8 L262.1,112.2 L268.5,201.5 L274.9,211.2 L281.2,202.4 L287.6,161.1 L294.0,112.1 L300.3,206.1 L306.7,204.9 L313.1,195.6 L319.4,134.9 L325.8,135.1 L332.2,205.9 L338.5,201.3 L344.9,196.3 L351.3,133.9 L357.6,159.0 L364.0,210.2" fill="none" stroke="#2a78d6" stroke-width="1.8"/>
+<path d="M52.0,226.0 L58.4,225.9 L64.7,221.9 L71.1,206.6 L77.5,150.2 L83.8,195.5 L90.2,212.0 L96.6,202.4 L102.9,183.4 L109.3,95.7 L115.7,203.8 L122.0,212.0 L128.4,210.0 L134.8,161.2 L141.1,86.8 L147.5,201.8 L153.9,213.9 L160.2,193.2 L166.6,115.3 L173.0,148.6 L179.3,211.7 L185.7,212.7 L192.1,183.4 L198.4,119.3 L204.8,168.2 L211.2,211.9 L217.6,205.8 L223.9,186.5 L230.3,130.2 L236.7,190.9 L243.0,213.0 L249.4,205.0 L255.8,181.8 L262.1,78.1 L268.5,204.4 L274.9,211.2 L281.2,206.7 L287.6,164.1 L294.0,96.0 L300.3,208.9 L306.7,215.8 L313.1,205.9 L319.4,133.7 L325.8,132.0 L332.2,212.2 L338.5,212.5 L344.9,202.0 L351.3,110.7 L357.6,166.9 L364.0,217.2" fill="none" stroke="#eb6834" stroke-width="1.8"/>
+<path d="M52.0,226.0 L58.4,223.8 L64.7,216.0 L71.1,191.3 L77.5,49.4 L83.8,174.6 L90.2,195.3 L96.6,178.2 L102.9,166.9 L109.3,68.2 L115.7,190.3 L122.0,197.6 L128.4,164.9 L134.8,111.5 L141.1,61.6 L147.5,204.4 L153.9,207.9 L160.2,179.1 L166.6,155.5 L173.0,121.0 L179.3,201.9 L185.7,196.1 L192.1,157.9 L198.4,101.7 L204.8,138.6 L211.2,207.3 L217.6,183.2 L223.9,118.0 L230.3,43.4 L236.7,178.4 L243.0,199.6 L249.4,190.3 L255.8,162.4 L262.1,79.1 L268.5,192.1 L274.9,196.4 L281.2,175.4 L287.6,136.0 L294.0,71.9 L300.3,203.4 L306.7,191.7 L313.1,177.5 L319.4,111.8 L325.8,118.6 L332.2,203.6 L338.5,193.7 L344.9,167.1 L351.3,90.4 L357.6,137.6 L364.0,213.9" fill="none" stroke="#4a3aa7" stroke-width="1.8"/>
+</g>
+</g>
+<g transform="translate(812,120)">
+<rect x="0" y="0" width="380" height="260" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="14" y="20" font-size="13" font-weight="600" fill="#0b0b0b">Fleet utilization over time (10-bin smoothed)</text>
+<g transform="translate(0,10)">
+<rect x="52" y="16" width="312" height="210" fill="#fcfcfb"/>
+<line x1="52" y1="226.0" x2="364" y2="226.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="229.0" font-size="9" fill="#83817a" text-anchor="end">0%</text>
+<line x1="52" y1="173.5" x2="364" y2="173.5" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="176.5" font-size="9" fill="#83817a" text-anchor="end">25%</text>
+<line x1="52" y1="121.0" x2="364" y2="121.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="124.0" font-size="9" fill="#83817a" text-anchor="end">50%</text>
+<line x1="52" y1="68.5" x2="364" y2="68.5" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="71.5" font-size="9" fill="#83817a" text-anchor="end">75%</text>
+<line x1="52" y1="16.0" x2="364" y2="16.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="46" y="19.0" font-size="9" fill="#83817a" text-anchor="end">100%</text>
+<text x="52.0" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=0</text>
+<text x="114.4" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=98</text>
+<text x="176.8" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=196</text>
+<text x="239.2" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=294</text>
+<text x="301.6" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=392</text>
+<text x="364.0" y="248" font-size="9" fill="#83817a" text-anchor="middle">t=490</text>
+<path d="M52.0,190.4 L58.4,128.8 L64.7,100.3 L71.1,97.2 L77.5,116.6 L83.8,191.1 L90.2,109.4 L96.6,98.8 L102.9,98.0 L109.3,131.3 L115.7,187.2 L122.0,100.0 L128.4,96.3 L134.8,98.8 L141.1,144.4 L147.5,181.0 L153.9,117.5 L160.2,105.8 L166.6,113.3 L173.0,163.7 L179.3,168.6 L185.7,112.2 L192.1,107.5 L198.4,118.3 L204.8,175.5 L211.2,152.5 L217.6,109.6 L223.9,109.2 L230.3,126.0 L236.7,191.0 L243.0,109.4 L249.4,98.9 L255.8,98.1 L262.1,131.7 L268.5,187.4 L274.9,100.6 L281.2,96.5 L287.6,98.4 L294.0,150.4 L300.3,172.0 L306.7,98.4 L313.1,94.4 L319.4,100.9 L325.8,168.3 L332.2,151.0 L338.5,98.6 L344.9,95.2 L351.3,106.7 L357.6,175.3 L364.0,152.6" fill="none" stroke="#2a78d6" stroke-width="1.8"/>
+<path d="M52.0,189.7 L58.4,127.4 L64.7,97.7 L71.1,94.6 L77.5,115.2 L83.8,190.3 L90.2,107.7 L96.6,96.4 L102.9,94.7 L109.3,130.8 L115.7,187.1 L122.0,98.2 L128.4,93.8 L134.8,95.6 L141.1,143.3 L147.5,181.1 L153.9,116.8 L160.2,102.8 L166.6,110.2 L173.0,162.7 L179.3,168.1 L185.7,111.4 L192.1,103.1 L198.4,116.3 L204.8,174.6 L211.2,152.5 L217.6,107.7 L223.9,105.0 L230.3,124.8 L236.7,189.7 L243.0,107.6 L249.4,96.2 L255.8,94.7 L262.1,130.6 L268.5,186.7 L274.9,98.1 L281.2,93.8 L287.6,95.9 L294.0,149.0 L300.3,171.7 L306.7,96.1 L313.1,91.6 L319.4,98.4 L325.8,167.9 L332.2,150.9 L338.5,95.8 L344.9,92.3 L351.3,104.5 L357.6,175.2 L364.0,152.5" fill="none" stroke="#eb6834" stroke-width="1.8"/>
+<path d="M52.0,191.1 L58.4,131.1 L64.7,102.8 L71.1,97.5 L77.5,118.4 L83.8,190.8 L90.2,110.6 L96.6,100.4 L102.9,98.7 L109.3,133.1 L115.7,187.1 L122.0,102.6 L128.4,97.5 L134.8,99.7 L141.1,145.6 L147.5,181.3 L153.9,119.1 L160.2,106.3 L166.6,114.5 L173.0,164.5 L179.3,169.0 L185.7,114.4 L192.1,108.2 L198.4,120.2 L204.8,176.1 L211.2,153.6 L217.6,111.5 L223.9,109.5 L230.3,127.7 L236.7,190.6 L243.0,111.0 L249.4,100.5 L255.8,98.8 L262.1,133.4 L268.5,186.6 L274.9,101.8 L281.2,97.5 L287.6,99.8 L294.0,151.2 L300.3,172.2 L306.7,100.0 L313.1,95.5 L319.4,102.4 L325.8,168.7 L332.2,151.4 L338.5,100.3 L344.9,96.3 L351.3,108.4 L357.6,175.7 L364.0,153.5" fill="none" stroke="#4a3aa7" stroke-width="1.8"/>
+</g>
+</g>
+</svg>

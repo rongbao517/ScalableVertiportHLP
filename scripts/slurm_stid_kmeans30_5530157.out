@@ -1,0 +1,72 @@
+device: cuda:0
+train/val/test samples: 1008 144 144
+in_dim=2  out_dim=2  lookback=48  n_sites=30
+params: 39890
+epoch 0 time 1.0s train_loss 1.590132 val_loss 0.550581
+epoch 1 time 0.1s train_loss 0.426625 val_loss 0.283971
+epoch 2 time 0.1s train_loss 0.273977 val_loss 0.218454
+epoch 3 time 0.1s train_loss 0.233997 val_loss 0.196254
+epoch 4 time 0.1s train_loss 0.215877 val_loss 0.185067
+epoch 5 time 0.1s train_loss 0.203761 val_loss 0.175133
+epoch 6 time 0.1s train_loss 0.194124 val_loss 0.169274
+epoch 7 time 0.1s train_loss 0.187714 val_loss 0.162315
+epoch 8 time 0.1s train_loss 0.182454 val_loss 0.159218
+epoch 9 time 0.1s train_loss 0.178874 val_loss 0.159680
+epoch 10 time 0.1s train_loss 0.176965 val_loss 0.155312
+epoch 11 time 0.1s train_loss 0.174687 val_loss 0.155380
+epoch 12 time 0.1s train_loss 0.171903 val_loss 0.152599
+epoch 13 time 0.1s train_loss 0.172350 val_loss 0.153855
+epoch 14 time 0.1s train_loss 0.169740 val_loss 0.152724
+epoch 15 time 0.1s train_loss 0.168089 val_loss 0.148989
+epoch 16 time 0.1s train_loss 0.166122 val_loss 0.151777
+epoch 17 time 0.1s train_loss 0.165239 val_loss 0.148106
+epoch 18 time 0.1s train_loss 0.164236 val_loss 0.146768
+epoch 19 time 0.1s train_loss 0.162713 val_loss 0.147335
+epoch 20 time 0.1s train_loss 0.162905 val_loss 0.147183
+epoch 21 time 0.1s train_loss 0.161762 val_loss 0.145118
+epoch 22 time 0.1s train_loss 0.160071 val_loss 0.145654
+epoch 23 time 0.1s train_loss 0.159759 val_loss 0.145443
+epoch 24 time 0.1s train_loss 0.159448 val_loss 0.143685
+epoch 25 time 0.1s train_loss 0.157613 val_loss 0.143577
+epoch 26 time 0.1s train_loss 0.157794 val_loss 0.143388
+epoch 27 time 0.1s train_loss 0.156590 val_loss 0.144929
+epoch 28 time 0.1s train_loss 0.156646 val_loss 0.142188
+epoch 29 time 0.1s train_loss 0.156906 val_loss 0.142238
+epoch 30 time 0.1s train_loss 0.155521 val_loss 0.142222
+epoch 31 time 0.1s train_loss 0.153621 val_loss 0.141632
+epoch 32 time 0.1s train_loss 0.153952 val_loss 0.142000
+epoch 33 time 0.1s train_loss 0.152056 val_loss 0.141880
+epoch 34 time 0.1s train_loss 0.154233 val_loss 0.141106
+epoch 35 time 0.1s train_loss 0.151304 val_loss 0.140829
+epoch 36 time 0.1s train_loss 0.151071 val_loss 0.140582
+epoch 37 time 0.1s train_loss 0.149858 val_loss 0.140178
+epoch 38 time 0.1s train_loss 0.149333 val_loss 0.141561
+epoch 39 time 0.1s train_loss 0.149294 val_loss 0.141592
+epoch 40 time 0.1s train_loss 0.148330 val_loss 0.141791
+epoch 41 time 0.1s train_loss 0.149527 val_loss 0.146187
+epoch 42 time 0.1s train_loss 0.147747 val_loss 0.142502
+epoch 43 time 0.1s train_loss 0.146919 val_loss 0.139991
+epoch 44 time 0.1s train_loss 0.145921 val_loss 0.140930
+epoch 45 time 0.1s train_loss 0.145958 val_loss 0.140372
+epoch 46 time 0.1s train_loss 0.144741 val_loss 0.141581
+epoch 47 time 0.1s train_loss 0.145187 val_loss 0.140077
+epoch 48 time 0.1s train_loss 0.143710 val_loss 0.140607
+epoch 49 time 0.1s train_loss 0.142721 val_loss 0.139722
+epoch 50 time 0.1s train_loss 0.142970 val_loss 0.140202
+epoch 51 time 0.1s train_loss 0.142493 val_loss 0.140227
+epoch 52 time 0.1s train_loss 0.141925 val_loss 0.141145
+epoch 53 time 0.1s train_loss 0.140729 val_loss 0.141500
+epoch 54 time 0.1s train_loss 0.140153 val_loss 0.140371
+epoch 55 time 0.1s train_loss 0.140347 val_loss 0.147908
+epoch 56 time 0.1s train_loss 0.140264 val_loss 0.142495
+epoch 57 time 0.1s train_loss 0.139046 val_loss 0.140632
+epoch 58 time 0.1s train_loss 0.139962 val_loss 0.141480
+epoch 59 time 0.1s train_loss 0.139065 val_loss 0.140027
+epoch 60 time 0.1s train_loss 0.137927 val_loss 0.141104
+epoch 61 time 0.1s train_loss 0.136294 val_loss 0.140767
+epoch 62 time 0.1s train_loss 0.136583 val_loss 0.140739
+epoch 63 time 0.1s train_loss 0.136084 val_loss 0.141515
+epoch 64 time 0.1s train_loss 0.135220 val_loss 0.142223
+early stopping at epoch 64
+test metrics (original space): {'MSE': 85.13887786865234, 'RMSE': 9.227072715759277, 'MAE': 4.752615928649902, 'MAPE': 34.3554801940918, 'R2': 0.9346623420715332, 'PCC': 0.9672668978541797}
+saved run -> /home/b5by/zhirong.b5by/work/shanghai_new/outputs/save_shanghai_demand_gru/260707083250_209484

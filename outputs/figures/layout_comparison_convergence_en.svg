@@ -1,0 +1,304 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1162" height="790" viewBox="0 0 1162 790" font-family="Noto Sans CJK SC, sans-serif">
+<rect x="0" y="0" width="1162" height="790" fill="#fcfcfb"/>
+<text x="20" y="30" font-size="20" font-weight="650" fill="#0b0b0b">Three Candidate Layouts · Inner-Loop Equilibrium Convergence</text>
+<text x="20" y="50" font-size="12.5" fill="#52514e">fleet=7500, λ=30, κw=1.5 unified config; t=1 is the no-feedback burn-in point (translucent, excluded from the stable window);</text>
+<text x="20" y="68" font-size="12.5" fill="#52514e">shaded = stable window where the convergence criterion holds (t=2-5); dashed line = equilibrium value D*/W*/R*.</text>
+<text x="20" y="86" font-size="12.5" fill="#52514e">Convergence criterion checks D and W only (3 consecutive transitions with |ΔD%|&lt;1% and |ΔW%|&lt;5%); R is not a criterion variable — it stabilizes naturally.</text>
+<rect x="20" y="99" width="14" height="11" fill="#e9f0fb"/><text x="40" y="108" font-size="11.5" fill="#52514e">Stable window (t=2-5)</text>
+<line x1="230" y1="104" x2="244" y2="104" stroke="#83817a" stroke-width="1.5" stroke-dasharray="3 3"/><text x="250" y="108" font-size="11.5" fill="#52514e">Equilibrium value D*/W*/R*</text>
+<circle cx="470" cy="104" r="4" fill="#83817a" opacity="0.45"/><text x="482" y="108" font-size="11.5" fill="#52514e">Burn-in point (t=1)</text>
+<circle cx="26" cy="160" r="5" fill="#2a78d6"/>
+<text x="38" y="165" font-size="14" font-weight="600" fill="#0b0b0b">Oracle baseline</text>
+<text x="26" y="186" font-size="11.5" fill="#83817a">Converged at t=5</text>
+<text x="26" y="202" font-size="11.5" fill="#83817a">Window max|ΔD%|=0.21% (&lt;1%)</text>
+<text x="26" y="218" font-size="11.5" fill="#83817a">max|ΔW%|=2.42% (&lt;5%)</text>
+<g transform="translate(200,140)">
+<rect x="0" y="0" width="300" height="196" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="10" y="16" font-size="11.5" font-weight="550" fill="#52514e">Dt Demand (M trips)</text>
+<g transform="translate(0,12)">
+<rect x="44" y="14" width="242" height="130" fill="#fcfcfb"/>
+<rect x="104.5" y="14" width="181.5" height="130" fill="#e9f0fb"/>
+<line x1="44" y1="144.0" x2="286" y2="144.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="147.0" font-size="8.5" fill="#83817a" text-anchor="end">350.10</text>
+<line x1="44" y1="100.7" x2="286" y2="100.7" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="103.7" font-size="8.5" fill="#83817a" text-anchor="end">357.91</text>
+<line x1="44" y1="57.3" x2="286" y2="57.3" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="60.3" font-size="8.5" fill="#83817a" text-anchor="end">365.72</text>
+<line x1="44" y1="14.0" x2="286" y2="14.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="17.0" font-size="8.5" fill="#83817a" text-anchor="end">373.53</text>
+<text x="44.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=1</text>
+<text x="104.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=2</text>
+<text x="165.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=3</text>
+<text x="225.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=4</text>
+<text x="286.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=5</text>
+<line x1="44" y1="125.2" x2="286" y2="125.2" stroke="#83817a" stroke-width="1.3" stroke-dasharray="3 3"/>
+<path d="M44.0,29.0 L104.5,129.0 L165.0,124.8 L225.5,123.1 L286.0,124.1" fill="none" stroke="#2a78d6" stroke-width="1.6" opacity="0.45"/>
+<path d="M104.5,129.0 L165.0,124.8 L225.5,123.1 L286.0,124.1" fill="none" stroke="#2a78d6" stroke-width="2.2"/>
+<circle cx="44.0" cy="29.0" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" opacity="0.45"/>
+<circle cx="104.5" cy="129.0" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="165.0" cy="124.8" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="225.5" cy="123.1" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="286.0" cy="124.1" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<text x="286.0" y="116.1" font-size="9.5" font-weight="600" fill="#0b0b0b" text-anchor="end">3.54</text>
+</g>
+<text x="290" y="192" font-size="11" fill="#83817a" text-anchor="end">D*=3.53M</text>
+</g>
+<g transform="translate(514,140)">
+<rect x="0" y="0" width="300" height="196" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="10" y="16" font-size="11.5" font-weight="550" fill="#52514e">Wt Wait time (min)</text>
+<g transform="translate(0,12)">
+<rect x="44" y="14" width="242" height="130" fill="#fcfcfb"/>
+<rect x="104.5" y="14" width="181.5" height="130" fill="#e9f0fb"/>
+<line x1="44" y1="144.0" x2="286" y2="144.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="147.0" font-size="8.5" fill="#83817a" text-anchor="end">1.16</text>
+<line x1="44" y1="100.7" x2="286" y2="100.7" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="103.7" font-size="8.5" fill="#83817a" text-anchor="end">1.20</text>
+<line x1="44" y1="57.3" x2="286" y2="57.3" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="60.3" font-size="8.5" fill="#83817a" text-anchor="end">1.23</text>
+<line x1="44" y1="14.0" x2="286" y2="14.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="17.0" font-size="8.5" fill="#83817a" text-anchor="end">1.26</text>
+<text x="44.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=1</text>
+<text x="104.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=2</text>
+<text x="165.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=3</text>
+<text x="225.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=4</text>
+<text x="286.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=5</text>
+<line x1="44" y1="104.0" x2="286" y2="104.0" stroke="#83817a" stroke-width="1.3" stroke-dasharray="3 3"/>
+<path d="M44.0,29.0 L104.5,100.1 L165.0,129.0 L225.5,111.8 L286.0,74.0" fill="none" stroke="#2a78d6" stroke-width="1.6" opacity="0.45"/>
+<path d="M104.5,100.1 L165.0,129.0 L225.5,111.8 L286.0,74.0" fill="none" stroke="#2a78d6" stroke-width="2.2"/>
+<circle cx="44.0" cy="29.0" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" opacity="0.45"/>
+<circle cx="104.5" cy="100.1" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="165.0" cy="129.0" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="225.5" cy="111.8" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="286.0" cy="74.0" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<text x="286.0" y="66.0" font-size="9.5" font-weight="600" fill="#0b0b0b" text-anchor="end">1.22</text>
+</g>
+<text x="290" y="192" font-size="11" fill="#83817a" text-anchor="end">W*=1.19 min</text>
+</g>
+<g transform="translate(828,140)">
+<rect x="0" y="0" width="300" height="196" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="10" y="16" font-size="11.5" font-weight="550" fill="#52514e">Rt Service rate (%, not a criterion)</text>
+<g transform="translate(0,12)">
+<rect x="44" y="14" width="242" height="130" fill="#fcfcfb"/>
+<rect x="104.5" y="14" width="181.5" height="130" fill="#e9f0fb"/>
+<line x1="44" y1="144.0" x2="286" y2="144.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="147.0" font-size="8.5" fill="#83817a" text-anchor="end">96.1</text>
+<line x1="44" y1="100.7" x2="286" y2="100.7" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="103.7" font-size="8.5" fill="#83817a" text-anchor="end">96.2</text>
+<line x1="44" y1="57.3" x2="286" y2="57.3" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="60.3" font-size="8.5" fill="#83817a" text-anchor="end">96.4</text>
+<line x1="44" y1="14.0" x2="286" y2="14.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="17.0" font-size="8.5" fill="#83817a" text-anchor="end">96.5</text>
+<text x="44.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=1</text>
+<text x="104.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=2</text>
+<text x="165.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=3</text>
+<text x="225.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=4</text>
+<text x="286.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=5</text>
+<line x1="44" y1="42.3" x2="286" y2="42.3" stroke="#83817a" stroke-width="1.3" stroke-dasharray="3 3"/>
+<path d="M44.0,129.0 L104.5,29.0 L165.0,42.3 L225.5,39.0 L286.0,55.7" fill="none" stroke="#2a78d6" stroke-width="1.6" opacity="0.45"/>
+<path d="M104.5,29.0 L165.0,42.3 L225.5,39.0 L286.0,55.7" fill="none" stroke="#2a78d6" stroke-width="2.2"/>
+<circle cx="44.0" cy="129.0" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" opacity="0.45"/>
+<circle cx="104.5" cy="29.0" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="165.0" cy="42.3" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="225.5" cy="39.0" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="286.0" cy="55.7" r="3.2" fill="#2a78d6" stroke="#f3f2ee" stroke-width="1.3" />
+<text x="286.0" y="47.7" font-size="9.5" font-weight="600" fill="#0b0b0b" text-anchor="end">96.4</text>
+</g>
+<text x="290" y="192" font-size="11" fill="#83817a" text-anchor="end">R*=96.40% (+1.4pp vs 95%)</text>
+</g>
+<circle cx="26" cy="370" r="5" fill="#eb6834"/>
+<text x="38" y="375" font-size="14" font-weight="600" fill="#0b0b0b">Mode-choice candidate</text>
+<text x="26" y="396" font-size="11.5" fill="#83817a">Converged at t=5</text>
+<text x="26" y="412" font-size="11.5" fill="#83817a">Window max|ΔD%|=0.40% (&lt;1%)</text>
+<text x="26" y="428" font-size="11.5" fill="#83817a">max|ΔW%|=1.67% (&lt;5%)</text>
+<g transform="translate(200,350)">
+<rect x="0" y="0" width="300" height="196" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="10" y="16" font-size="11.5" font-weight="550" fill="#52514e">Dt Demand (M trips)</text>
+<g transform="translate(0,12)">
+<rect x="44" y="14" width="242" height="130" fill="#fcfcfb"/>
+<rect x="104.5" y="14" width="181.5" height="130" fill="#e9f0fb"/>
+<line x1="44" y1="144.0" x2="286" y2="144.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="147.0" font-size="8.5" fill="#83817a" text-anchor="end">354.53</text>
+<line x1="44" y1="100.7" x2="286" y2="100.7" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="103.7" font-size="8.5" fill="#83817a" text-anchor="end">361.30</text>
+<line x1="44" y1="57.3" x2="286" y2="57.3" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="60.3" font-size="8.5" fill="#83817a" text-anchor="end">368.07</text>
+<line x1="44" y1="14.0" x2="286" y2="14.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="17.0" font-size="8.5" fill="#83817a" text-anchor="end">374.85</text>
+<text x="44.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=1</text>
+<text x="104.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=2</text>
+<text x="165.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=3</text>
+<text x="225.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=4</text>
+<text x="286.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=5</text>
+<line x1="44" y1="122.7" x2="286" y2="122.7" stroke="#83817a" stroke-width="1.3" stroke-dasharray="3 3"/>
+<path d="M44.0,29.0 L104.5,129.0 L165.0,119.9 L225.5,121.3 L286.0,120.7" fill="none" stroke="#eb6834" stroke-width="1.6" opacity="0.45"/>
+<path d="M104.5,129.0 L165.0,119.9 L225.5,121.3 L286.0,120.7" fill="none" stroke="#eb6834" stroke-width="2.2"/>
+<circle cx="44.0" cy="29.0" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" opacity="0.45"/>
+<circle cx="104.5" cy="129.0" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="165.0" cy="119.9" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="225.5" cy="121.3" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="286.0" cy="120.7" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<text x="286.0" y="112.7" font-size="9.5" font-weight="600" fill="#0b0b0b" text-anchor="end">3.58</text>
+</g>
+<text x="290" y="192" font-size="11" fill="#83817a" text-anchor="end">D*=3.58M</text>
+</g>
+<g transform="translate(514,350)">
+<rect x="0" y="0" width="300" height="196" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="10" y="16" font-size="11.5" font-weight="550" fill="#52514e">Wt Wait time (min)</text>
+<g transform="translate(0,12)">
+<rect x="44" y="14" width="242" height="130" fill="#fcfcfb"/>
+<rect x="104.5" y="14" width="181.5" height="130" fill="#e9f0fb"/>
+<line x1="44" y1="144.0" x2="286" y2="144.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="147.0" font-size="8.5" fill="#83817a" text-anchor="end">0.96</text>
+<line x1="44" y1="100.7" x2="286" y2="100.7" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="103.7" font-size="8.5" fill="#83817a" text-anchor="end">1.00</text>
+<line x1="44" y1="57.3" x2="286" y2="57.3" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="60.3" font-size="8.5" fill="#83817a" text-anchor="end">1.04</text>
+<line x1="44" y1="14.0" x2="286" y2="14.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="17.0" font-size="8.5" fill="#83817a" text-anchor="end">1.08</text>
+<text x="44.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=1</text>
+<text x="104.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=2</text>
+<text x="165.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=3</text>
+<text x="225.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=4</text>
+<text x="286.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=5</text>
+<line x1="44" y1="120.0" x2="286" y2="120.0" stroke="#83817a" stroke-width="1.3" stroke-dasharray="3 3"/>
+<path d="M44.0,29.0 L104.5,129.0 L165.0,112.8 L225.5,120.1 L286.0,119.1" fill="none" stroke="#eb6834" stroke-width="1.6" opacity="0.45"/>
+<path d="M104.5,129.0 L165.0,112.8 L225.5,120.1 L286.0,119.1" fill="none" stroke="#eb6834" stroke-width="2.2"/>
+<circle cx="44.0" cy="29.0" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" opacity="0.45"/>
+<circle cx="104.5" cy="129.0" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="165.0" cy="112.8" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="225.5" cy="120.1" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="286.0" cy="119.1" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<text x="286.0" y="111.1" font-size="9.5" font-weight="600" fill="#0b0b0b" text-anchor="end">0.98</text>
+</g>
+<text x="290" y="192" font-size="11" fill="#83817a" text-anchor="end">W*=0.98 min</text>
+</g>
+<g transform="translate(828,350)">
+<rect x="0" y="0" width="300" height="196" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="10" y="16" font-size="11.5" font-weight="550" fill="#52514e">Rt Service rate (%, not a criterion)</text>
+<g transform="translate(0,12)">
+<rect x="44" y="14" width="242" height="130" fill="#fcfcfb"/>
+<rect x="104.5" y="14" width="181.5" height="130" fill="#e9f0fb"/>
+<line x1="44" y1="144.0" x2="286" y2="144.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="147.0" font-size="8.5" fill="#83817a" text-anchor="end">96.4</text>
+<line x1="44" y1="100.7" x2="286" y2="100.7" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="103.7" font-size="8.5" fill="#83817a" text-anchor="end">96.6</text>
+<line x1="44" y1="57.3" x2="286" y2="57.3" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="60.3" font-size="8.5" fill="#83817a" text-anchor="end">96.7</text>
+<line x1="44" y1="14.0" x2="286" y2="14.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="17.0" font-size="8.5" fill="#83817a" text-anchor="end">96.9</text>
+<text x="44.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=1</text>
+<text x="104.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=2</text>
+<text x="165.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=3</text>
+<text x="225.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=4</text>
+<text x="286.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=5</text>
+<line x1="44" y1="31.6" x2="286" y2="31.6" stroke="#83817a" stroke-width="1.3" stroke-dasharray="3 3"/>
+<path d="M44.0,129.0 L104.5,29.0 L165.0,41.8 L225.5,29.0 L286.0,31.6" fill="none" stroke="#eb6834" stroke-width="1.6" opacity="0.45"/>
+<path d="M104.5,29.0 L165.0,41.8 L225.5,29.0 L286.0,31.6" fill="none" stroke="#eb6834" stroke-width="2.2"/>
+<circle cx="44.0" cy="129.0" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" opacity="0.45"/>
+<circle cx="104.5" cy="29.0" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="165.0" cy="41.8" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="225.5" cy="29.0" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="286.0" cy="31.6" r="3.2" fill="#eb6834" stroke="#f3f2ee" stroke-width="1.3" />
+<text x="286.0" y="23.6" font-size="9.5" font-weight="600" fill="#0b0b0b" text-anchor="end">96.8</text>
+</g>
+<text x="290" y="192" font-size="11" fill="#83817a" text-anchor="end">R*=96.84% (+1.8pp vs 95%)</text>
+</g>
+<circle cx="26" cy="580" r="5" fill="#4a3aa7"/>
+<text x="38" y="585" font-size="14" font-weight="600" fill="#0b0b0b">Threshold control</text>
+<text x="26" y="606" font-size="11.5" fill="#83817a">Converged at t=5</text>
+<text x="26" y="622" font-size="11.5" fill="#83817a">Window max|ΔD%|=0.23% (&lt;1%)</text>
+<text x="26" y="638" font-size="11.5" fill="#83817a">max|ΔW%|=2.24% (&lt;5%)</text>
+<g transform="translate(200,560)">
+<rect x="0" y="0" width="300" height="196" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="10" y="16" font-size="11.5" font-weight="550" fill="#52514e">Dt Demand (M trips)</text>
+<g transform="translate(0,12)">
+<rect x="44" y="14" width="242" height="130" fill="#fcfcfb"/>
+<rect x="104.5" y="14" width="181.5" height="130" fill="#e9f0fb"/>
+<line x1="44" y1="144.0" x2="286" y2="144.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="147.0" font-size="8.5" fill="#83817a" text-anchor="end">344.09</text>
+<line x1="44" y1="100.7" x2="286" y2="100.7" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="103.7" font-size="8.5" fill="#83817a" text-anchor="end">351.98</text>
+<line x1="44" y1="57.3" x2="286" y2="57.3" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="60.3" font-size="8.5" fill="#83817a" text-anchor="end">359.87</text>
+<line x1="44" y1="14.0" x2="286" y2="14.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="17.0" font-size="8.5" fill="#83817a" text-anchor="end">367.76</text>
+<text x="44.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=1</text>
+<text x="104.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=2</text>
+<text x="165.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=3</text>
+<text x="225.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=4</text>
+<text x="286.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=5</text>
+<line x1="44" y1="126.3" x2="286" y2="126.3" stroke="#83817a" stroke-width="1.3" stroke-dasharray="3 3"/>
+<path d="M44.0,29.0 L104.5,129.0 L165.0,124.6 L225.5,126.7 L286.0,124.9" fill="none" stroke="#4a3aa7" stroke-width="1.6" opacity="0.45"/>
+<path d="M104.5,129.0 L165.0,124.6 L225.5,126.7 L286.0,124.9" fill="none" stroke="#4a3aa7" stroke-width="2.2"/>
+<circle cx="44.0" cy="29.0" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" opacity="0.45"/>
+<circle cx="104.5" cy="129.0" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="165.0" cy="124.6" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="225.5" cy="126.7" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="286.0" cy="124.9" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<text x="286.0" y="116.9" font-size="9.5" font-weight="600" fill="#0b0b0b" text-anchor="end">3.48</text>
+</g>
+<text x="290" y="192" font-size="11" fill="#83817a" text-anchor="end">D*=3.47M</text>
+</g>
+<g transform="translate(514,560)">
+<rect x="0" y="0" width="300" height="196" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="10" y="16" font-size="11.5" font-weight="550" fill="#52514e">Wt Wait time (min)</text>
+<g transform="translate(0,12)">
+<rect x="44" y="14" width="242" height="130" fill="#fcfcfb"/>
+<rect x="104.5" y="14" width="181.5" height="130" fill="#e9f0fb"/>
+<line x1="44" y1="144.0" x2="286" y2="144.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="147.0" font-size="8.5" fill="#83817a" text-anchor="end">1.21</text>
+<line x1="44" y1="100.7" x2="286" y2="100.7" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="103.7" font-size="8.5" fill="#83817a" text-anchor="end">1.25</text>
+<line x1="44" y1="57.3" x2="286" y2="57.3" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="60.3" font-size="8.5" fill="#83817a" text-anchor="end">1.28</text>
+<line x1="44" y1="14.0" x2="286" y2="14.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="17.0" font-size="8.5" fill="#83817a" text-anchor="end">1.31</text>
+<text x="44.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=1</text>
+<text x="104.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=2</text>
+<text x="165.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=3</text>
+<text x="225.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=4</text>
+<text x="286.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=5</text>
+<line x1="44" y1="102.9" x2="286" y2="102.9" stroke="#83817a" stroke-width="1.3" stroke-dasharray="3 3"/>
+<path d="M44.0,29.0 L104.5,108.5 L165.0,70.6 L225.5,103.7 L286.0,129.0" fill="none" stroke="#4a3aa7" stroke-width="1.6" opacity="0.45"/>
+<path d="M104.5,108.5 L165.0,70.6 L225.5,103.7 L286.0,129.0" fill="none" stroke="#4a3aa7" stroke-width="2.2"/>
+<circle cx="44.0" cy="29.0" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" opacity="0.45"/>
+<circle cx="104.5" cy="108.5" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="165.0" cy="70.6" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="225.5" cy="103.7" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="286.0" cy="129.0" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<text x="286.0" y="121.0" font-size="9.5" font-weight="600" fill="#0b0b0b" text-anchor="end">1.22</text>
+</g>
+<text x="290" y="192" font-size="11" fill="#83817a" text-anchor="end">W*=1.24 min</text>
+</g>
+<g transform="translate(828,560)">
+<rect x="0" y="0" width="300" height="196" fill="#f3f2ee" stroke="#e3e1d9" stroke-width="1" rx="8"/>
+<text x="10" y="16" font-size="11.5" font-weight="550" fill="#52514e">Rt Service rate (%, not a criterion)</text>
+<g transform="translate(0,12)">
+<rect x="44" y="14" width="242" height="130" fill="#fcfcfb"/>
+<rect x="104.5" y="14" width="181.5" height="130" fill="#e9f0fb"/>
+<line x1="44" y1="144.0" x2="286" y2="144.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="147.0" font-size="8.5" fill="#83817a" text-anchor="end">96.0</text>
+<line x1="44" y1="100.7" x2="286" y2="100.7" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="103.7" font-size="8.5" fill="#83817a" text-anchor="end">96.2</text>
+<line x1="44" y1="57.3" x2="286" y2="57.3" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="60.3" font-size="8.5" fill="#83817a" text-anchor="end">96.4</text>
+<line x1="44" y1="14.0" x2="286" y2="14.0" stroke="#e3e1d9" stroke-width="1"/>
+<text x="38" y="17.0" font-size="8.5" fill="#83817a" text-anchor="end">96.5</text>
+<text x="44.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=1</text>
+<text x="104.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=2</text>
+<text x="165.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=3</text>
+<text x="225.5" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=4</text>
+<text x="286.0" y="162" font-size="8.5" fill="#83817a" text-anchor="middle">t=5</text>
+<line x1="44" y1="36.5" x2="286" y2="36.5" stroke="#83817a" stroke-width="1.3" stroke-dasharray="3 3"/>
+<path d="M44.0,129.0 L104.5,34.0 L165.0,46.5 L225.5,29.0 L286.0,34.0" fill="none" stroke="#4a3aa7" stroke-width="1.6" opacity="0.45"/>
+<path d="M104.5,34.0 L165.0,46.5 L225.5,29.0 L286.0,34.0" fill="none" stroke="#4a3aa7" stroke-width="2.2"/>
+<circle cx="44.0" cy="129.0" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" opacity="0.45"/>
+<circle cx="104.5" cy="34.0" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="165.0" cy="46.5" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="225.5" cy="29.0" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<circle cx="286.0" cy="34.0" r="3.2" fill="#4a3aa7" stroke="#f3f2ee" stroke-width="1.3" />
+<text x="286.0" y="26.0" font-size="9.5" font-weight="600" fill="#0b0b0b" text-anchor="end">96.5</text>
+</g>
+<text x="290" y="192" font-size="11" fill="#83817a" text-anchor="end">R*=96.44% (+1.4pp vs 95%)</text>
+</g>
+</svg>
