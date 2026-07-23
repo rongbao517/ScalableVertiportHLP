@@ -81,13 +81,16 @@ def main():
                           "original full-jump update; alpha<1.0 (e.g. 0.3-0.5) damps oscillation from "
                           "an over-aggressive fixed-point step, distinguishing solver instability from "
                           "genuine non-existence of a stable equilibrium at this capacity.")
-    ap.add_argument("--rebalance-mechanism", choices=["tier0", "lp"], default="tier0",
-                     help="tier0 (default, matches every prior eqsearch run in this project): the "
-                          "net_inflow-based predictive tier. lp (2026-07-22): the rolling-horizon "
-                          "positioning LP -- each iteration's own freshly-computed bucket_csv (built below "
-                          "from THIS iteration's w_prev-dependent mode-choice demand) is what the LP sees "
-                          "as its future-H-bins input, so this is a genuine full-equilibrium test, not a "
-                          "fixed-demand snapshot replay.")
+    ap.add_argument("--rebalance-mechanism", choices=["tier0", "lp"], default="lp",
+                     help="lp (default as of 2026-07-23): the rolling-horizon positioning LP -- each "
+                          "iteration's own freshly-computed bucket_csv (built below from THIS iteration's "
+                          "w_prev-dependent mode-choice demand) is what the LP sees as its future-H-bins "
+                          "input, so this is a genuine full-equilibrium test, not a fixed-demand snapshot "
+                          "replay. Re-converging all 3 site layouts under this default (2026-07-22/23) "
+                          "brought R* back above the 95% feasibility gate for every layout -- see "
+                          "outputs/fleet_sim/LP_MIGRATION_REPORT.md. tier0: the older net_inflow-based "
+                          "predictive tier used by every eqsearch run before 2026-07-23 (still available "
+                          "for backward compatibility/comparison).")
     ap.add_argument("--positioning-lp-horizon", type=int, default=8)
     args = ap.parse_args()
 

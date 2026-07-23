@@ -594,12 +594,17 @@ def main():
                           "turned Tier 0 into fleet-wide churn that cost more battery than it saved)")
     ap.add_argument("--predictive-max-drain", type=int, default=3,
                      help="hard cap on idle vehicles drained per sink per bin")
-    ap.add_argument("--rebalance-mechanism", choices=["tier0", "lp"], default="tier0",
-                     help="tier0 (default, unchanged behavior): the net_inflow-based predictive tier above, "
-                          "gated by --predictive-rebalancing. lp: replaces it with the rolling-horizon "
-                          "positioning LP (positioning_lp.py, 2026-07-22) -- --predictive-rebalancing and "
-                          "the --predictive-* flags are ignored when this is 'lp' (Tier 1 shortage / Tier 2 "
-                          "overflow cap still run unchanged either way).")
+    ap.add_argument("--rebalance-mechanism", choices=["tier0", "lp"], default="lp",
+                     help="lp (default as of 2026-07-23): the rolling-horizon positioning LP "
+                          "(positioning_lp.py, 2026-07-22) -- beat tier0 in every one of 6 fixed-demand "
+                          "robustness scenarios (R* +2.3 to +4.4pp, empty mileage -2.6% to -9.9%, reactive "
+                          "shortage dispatch -28.9% to -84.7%) and in full demand-equilibrium re-convergence "
+                          "for all 3 site layouts (all crossed back above the 95% feasibility gate; see "
+                          "outputs/fleet_sim/LP_MIGRATION_REPORT.md). tier0: the older net_inflow-based "
+                          "predictive tier, gated by --predictive-rebalancing -- kept for backward "
+                          "compatibility/comparison, not recommended for new runs. --predictive-rebalancing "
+                          "and the --predictive-* flags are ignored when this is 'lp' (Tier 1 shortage / "
+                          "Tier 2 overflow cap still run unchanged either way).")
     ap.add_argument("--positioning-lp-horizon", type=int, default=8,
                      help="rolling lookahead window H (bins) for --rebalance-mechanism=lp; H=8 is the "
                           "2026-07-22 robustness-battery-validated default (H=12 gave only +0.26 to +0.80pp "

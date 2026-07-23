@@ -4,11 +4,19 @@ End-to-end pipeline: ground-demand forecasting → candidate vertiport site
 selection → dynamic-speed route assignment → fleet simulation → demand-operations
 closed-loop equilibrium → comparison of candidate site layouts.
 
-**The authoritative record of the project's main results (frozen inputs,
-equilibrium trajectories, robustness checks, final layout ranking) is**
-`outputs/fleet_sim/_frozen_baseline_v1/MANIFEST.md`**. Read that file for
-anything result-related; this README only orients you to the pipeline
-stages and where things live.**
+**The authoritative record of the project's original results (frozen
+inputs, equilibrium trajectories, robustness checks) is**
+`outputs/fleet_sim/_frozen_baseline_v1/MANIFEST.md`**, but its layout
+ranking is superseded -- see
+`outputs/fleet_sim/LP_MIGRATION_REPORT.md` (2026-07-23) for the current
+result.** A rebalancing-signal bug (rounding noise conflated with genuine
+vehicle shortage) was found and fixed, which initially dropped every
+layout's R\* below the 95% feasibility gate; replacing the rebalancing
+mechanism with a rolling-horizon positioning LP resolved this and brought
+all three layouts back above 95% -- but reversed the ranking (threshold对照
+is now best, mode-choice候选 is now worst). Read LP_MIGRATION_REPORT.md
+first for anything result-related; this README only orients you to the
+pipeline stages and where things live.
 
 ## Pipeline stages
 
@@ -24,12 +32,17 @@ stages and where things live.**
 4. **Route assignment** (`scripts/route_assignment_od_to_vertiports.py`) --
    assigns each ground OD pair to its optimal vertiport pair, dynamic-speed-aware.
 5. **Fleet simulation** (`scripts/fleet_sim/run_shanghai_fleet_simulation.py`) --
-   task assignment, charging, predictive rebalancing given a fixed demand bucket.
+   task assignment, charging, rebalancing given a fixed demand bucket.
+   `--rebalance-mechanism {lp,tier0}` selects the rebalancing mechanism;
+   **`lp` (rolling-horizon positioning LP, `positioning_lp.py`) is the
+   default as of 2026-07-23** -- see LP_MIGRATION_REPORT.md for why. `tier0`
+   (the older net_inflow-based heuristic) remains available for
+   backward-compatibility/comparison but is not recommended for new runs.
 6. **Demand-operations closed-loop equilibrium** (`scripts/fleet_sim/run_equilibrium_search.py`) --
    the inner loop: iterates mode-choice demand ↔ fleet-sim wait time to a
-   fixed point (D*, W*, R*). See MANIFEST.md for the full methodology,
-   convergence criterion, and numbering convention (`t`, not raw `iterN`
-   filenames).
+   fixed point (D*, W*, R*), using whichever rebalancing mechanism is
+   selected. See MANIFEST.md for the full methodology, convergence
+   criterion, and numbering convention (`t`, not raw `iterN` filenames).
 7. **Site-layout comparison** (outer loop) -- runs stage 6 identically for
    three candidate layouts under one unified operating configuration
    (fleet=7500, λ=30, κ_w=1.5) and ranks them by a pre-declared feasibility
@@ -54,14 +67,29 @@ exploration phase, and is out of scope for the layout comparison.
 
 ## Result artifacts
 
-- `outputs/fleet_sim/_frozen_baseline_v1/MANIFEST.md` -- authoritative results record.
+- `outputs/fleet_sim/LP_MIGRATION_REPORT.md` -- **current** authoritative
+  results record (v1→v2→v3 comparison, rebalancing-mechanism history,
+  final layout ranking under the LP default).
+- `outputs/fleet_sim/_frozen_baseline_v1/MANIFEST.md` -- original (v1,
+  pre-fix, Tier0) results record; superseded ranking, kept for historical
+  reference.
 - `outputs/figures/layout_comparison_convergence_en.{png,svg}` -- convergence
-  plots (D_t/W_t/R_t) for the three frozen layouts.
+  plots (D_t/W_t/R_t) for the three frozen layouts (v1/Tier0 era).
 
-## Known open items (as of 2026-07-20)
+## Known open items (as of 2026-07-23)
 
 - No per-passenger energy metric is reported separately from combined
   operating+transport cost (`c*`).
+- No formal "frozen baseline v3" snapshot (matching v1's file-hash/
+  MANIFEST convention) exists yet for the LP-based results; they currently
+  live only in `eqsearch_trajectory_lp_*.csv` and LP_MIGRATION_REPORT.md.
+- The positioning LP (`positioning_lp.py`) is a continuous relaxation with
+  no per-vehicle battery bucketing, terminal-inventory value, or integer
+  variables -- validated as unnecessary for the 3 main layouts (fleet=7500,
+  execution rate ~100%), but fleet=4500-scale scarce-capacity scenarios
+  show a real battery-driven shortfall component (36-43% of real_unmet)
+  that this model doesn't address. Not in scope unless a scarce-fleet
+  scenario enters deployment consideration.
 
 ## Archives
 

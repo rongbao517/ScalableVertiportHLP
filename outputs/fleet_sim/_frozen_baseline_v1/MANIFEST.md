@@ -1,5 +1,20 @@
 # Frozen baseline v1: demand-operations equilibrium, oracle sites, λ=30, κ_w=1.5
 
+> **⚠️ SUPERSEDED (2026-07-23) -- read `outputs/fleet_sim/LP_MIGRATION_REPORT.md`
+> before citing the layout ranking below.** A real bug was found in the
+> rebalancing signal used by every result in this file (rounding noise
+> conflated with genuine vehicle shortage), fixed, and the fix's own
+> immediate effect *dropped* every layout's R\* below the 95% feasibility
+> gate. That regression was then resolved by replacing the rebalancing
+> mechanism with a rolling-horizon positioning LP -- re-converging all
+> three layouts under fixed+LP brought R\* back above 95% for every one of
+> them, but **reversed the layout ranking**: mode-choice候选, ranked #1
+> below, is now the *worst* of the three; threshold对照, ranked #3 below,
+> is now the *best*. This file's numbers (v1, pre-fix, Tier0) are kept
+> unmodified for historical/methodological reference -- they are still
+> valid as "what the old mechanism produced" -- but the **ranking
+> conclusion and recommended layout below are no longer current.**
+
 Frozen 2026-07-19, extended 2026-07-20 with fleet-size sensitivity, κ_w /
 initial-wait robustness audit, and the 3-layout comparison. This is the
 reference configuration for the inner-loop equilibrium result reported as
@@ -237,3 +252,10 @@ between the best and second-best layout (1.69%) is small relative to the
 gap either has over the worst layout, consistent with "operating capacity
 (fixed at fleet=7500 here) dominates outcomes, but site structure still
 contributes an observable, above-noise secondary effect."
+
+> **⚠️ This ranking is superseded as of 2026-07-23.** Under the fixed
+> rebalancing signal + rolling-horizon positioning LP (the current default
+> mechanism), the re-converged ranking is **threshold对照 > Oracle基准 >
+> mode-choice候选** -- the reverse of the order above. See
+> `outputs/fleet_sim/LP_MIGRATION_REPORT.md` for the full v1→v2→v3
+> comparison and why the ranking flipped.
