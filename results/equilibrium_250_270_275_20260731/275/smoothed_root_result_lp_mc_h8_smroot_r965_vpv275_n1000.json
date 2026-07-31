@@ -1,0 +1,45 @@
+{
+  "label": "lp_mc_h8_smroot_r965_vpv275_n1000",
+  "status": "residual_tolerance_met",
+  "root_estimate": {
+    "evaluation": 8,
+    "wait_input_min": 0.96875,
+    "demand_monthly": 3583231.903422432,
+    "wait_observed_min": 0.9722428749857496,
+    "service_rate": 0.9671489917678961,
+    "residual_min": 0.0034928749857495722,
+    "demand_spread_pct": 0.15996098253650695,
+    "wait_spread_min": 0.051413574395802186,
+    "service_spread_pp": 0.27633309861259114
+  },
+  "feasible": true,
+  "constraints": {
+    "max_wait_min": 5.0,
+    "min_service_rate": 0.965
+  },
+  "evaluations": 8,
+  "final_bracket": {
+    "low": {
+      "evaluation": 7,
+      "wait_input_min": 0.9375,
+      "demand_monthly": 3587712.973739399,
+      "wait_observed_min": 1.011480908722204,
+      "service_rate": 0.9653518248654724,
+      "residual_min": 0.07398090872220409,
+      "demand_spread_pct": 0.1599840018081339,
+      "wait_spread_min": 0.06332779889017881,
+      "service_spread_pp": 0.24088659492079723
+    },
+    "high": {
+      "evaluation": 3,
+      "wait_input_min": 1.0,
+      "demand_monthly": 3578757.0816839733,
+      "wait_observed_min": 0.9459274935824448,
+      "service_rate": 0.9676945358229901,
+      "residual_min": -0.05407250641755523,
+      "demand_spread_pct": 0.15993738327657825,
+      "wait_spread_min": 0.045891451041754516,
+      "service_spread_pp": 0.1335167623911837
+    }
+  }
+}
