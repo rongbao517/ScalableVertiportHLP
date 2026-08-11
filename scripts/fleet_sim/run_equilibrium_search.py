@@ -5,9 +5,11 @@ whole robustness validation plan (multi-initial-demand, kappa_w sensitivity,
 fleet-size sensitivity) can run unattended instead of one manually-driven
 iteration per conversation turn.
 
-Convergence criterion (declared in outputs/fleet_sim/_frozen_baseline_v1/
+Default convergence criterion (declared in outputs/fleet_sim/_frozen_baseline_v1/
 MANIFEST.md, must match the frozen-baseline run exactly): 3 consecutive
-transitions with |delta_D/D| < 1% AND |delta_W/W| < 5%.
+transitions with |delta_D/D| < 1% AND |delta_W/W| < 5%.  A stricter
+three-variable check can additionally require |delta_R| to be below a
+user-specified percentage-point threshold.
 
 Each iteration: compute_mode_choice_demand.py (wait_time_min=W_{t-1}) ->
 build_dynspeed_full_demand.py -> run_shanghai_fleet_simulation.py -> extract
@@ -74,6 +76,17 @@ def main():
     ap.add_argument("--max-iters", type=int, default=12)
     ap.add_argument("--d-thresh-pct", type=float, default=1.0)
     ap.add_argument("--w-thresh-pct", type=float, default=5.0)
+    ap.add_argument("--w-residual-min", type=float, default=float("inf"),
+                    help="optional maximum absolute fixed-point residual |W_observed-W_input| "
+                         "in minutes; default infinity preserves the historical relative-W criterion")
+    ap.add_argument("--r-thresh-pp", type=float, default=float("inf"),
+                    help="optional maximum absolute service-rate change in percentage points; "
+                         "default infinity preserves the frozen D-W-only criterion")
+    ap.add_argument("--min-service-rate", type=float, default=0.0,
+                    help="minimum acceptable final service rate (0-1); included in the strict-pass test, "
+                         "default 0 preserves historical convergence behavior")
+    ap.add_argument("--max-wait-min", type=float, default=float("inf"),
+                    help="maximum acceptable observed wait in minutes; included in the strict-pass test")
     ap.add_argument("--consecutive-needed", type=int, default=3)
     ap.add_argument("--damping", type=float, default=1.0,
                      help="under-relaxation factor alpha in [0,1] applied to the wait-time update: "
@@ -87,7 +100,7 @@ def main():
                           "w_prev-dependent mode-choice demand) is what the LP sees as its future-H-bins "
                           "input, so this is a genuine full-equilibrium test, not a fixed-demand snapshot "
                           "replay. Re-converging all 3 site layouts under this default (2026-07-22/23) "
-                          "brought R* back above the 95% feasibility gate for every layout -- see "
+                          "brought R* back above the 95%% feasibility gate for every layout -- see "
                           "outputs/fleet_sim/LP_MIGRATION_REPORT.md. tier0: the older net_inflow-based "
                           "predictive tier used by every eqsearch run before 2026-07-23 (still available "
                           "for backward compatibility/comparison).")
@@ -98,6 +111,7 @@ def main():
     trajectory = []
     w_prev = args.initial_wait_min
     d_prev = None
+    r_prev = None
     consecutive_ok = 0
 
     for t in range(1, args.max_iters + 1):
@@ -135,6 +149,8 @@ def main():
         routed_csv.unlink(missing_ok=True)  # ~240MB intermediate, no longer needed once bucket_csv exists
         d_delta_pct = None if d_prev is None else (d_t - d_prev) / d_prev * 100.0
         w_delta_pct = (w_t - w_prev) / w_prev * 100.0 if w_prev > 1e-9 else float("inf")
+        w_residual_min = w_t - w_prev
+        r_delta_pp = None if r_prev is None else (r_t - r_prev) * 100.0
 
         # w_t is the RAW observed wait from this iteration's fleet_sim run (always logged as-is,
         # for honest reporting of what was actually measured). w_next is what's fed into the NEXT
@@ -144,12 +160,19 @@ def main():
         w_next = w_prev + args.damping * (w_t - w_prev)
 
         trajectory.append({"t": t, "D_t": d_t, "W_t": w_t, "R_t": r_t,
-                            "delta_D_pct": d_delta_pct, "delta_W_pct": w_delta_pct, "w_input_next": w_next})
+                            "delta_D_pct": d_delta_pct, "delta_W_pct": w_delta_pct,
+                            "w_residual_min": w_residual_min,
+                            "delta_R_pp": r_delta_pp, "w_input_next": w_next})
         print(f"[{args.label}] t={t} D={d_t:.0f} W={w_t:.4f}min R={r_t:.4f} "
-              f"dD%={d_delta_pct} dW%={w_delta_pct:.2f} w_next={w_next:.4f}", flush=True)
+              f"dD%={d_delta_pct} dW%={w_delta_pct:.2f} dRpp={r_delta_pp} "
+              f"w_next={w_next:.4f}", flush=True)
 
         ok_this_transition = (d_delta_pct is not None and abs(d_delta_pct) < args.d_thresh_pct
-                              and abs(w_delta_pct) < args.w_thresh_pct)
+                              and abs(w_delta_pct) < args.w_thresh_pct
+                              and abs(w_residual_min) < args.w_residual_min
+                              and abs(r_delta_pp) < args.r_thresh_pp)
+        ok_this_transition = (ok_this_transition and r_t >= args.min_service_rate
+                              and w_t <= args.max_wait_min)
         consecutive_ok = consecutive_ok + 1 if ok_this_transition else 0
 
         pd.DataFrame(trajectory).to_csv(out_dir / f"eqsearch_trajectory_{args.label}.csv", index=False)
@@ -161,6 +184,7 @@ def main():
 
         w_prev = w_next
         d_prev = d_t
+        r_prev = r_t
     else:
         print(f"[{args.label}] DID NOT CONVERGE within {args.max_iters} iterations", flush=True)
 

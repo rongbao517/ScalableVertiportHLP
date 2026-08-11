@@ -1,0 +1,23 @@
+{
+  "n_bins": 500,
+  "real_assignment_ratio_formula": "met_demand / (met_demand + unmet_fleet_insufficient + unmet_away_flying + unmet_insufficient_battery)",
+  "real_assignment_ratio_bin_mean": 0.9695990966282961,
+  "real_assignment_ratio_min": 0.8546975635828591,
+  "real_assignment_ratio_max": 1.0,
+  "aggregate_real_assignment_ratio": 0.9607296151675414,
+  "low_battery_ratio_mean": 0.002187733333333316,
+  "low_battery_ratio_max": 0.0601333333333333,
+  "highest_median_idle_site": "433",
+  "highest_median_idle_vehicles": 500.0,
+  "lowest_median_idle_site": "933",
+  "lowest_median_idle_vehicles": 3.0,
+  "equilibrium_window": [
+    7,
+    8,
+    9,
+    10
+  ],
+  "D_star_monthly_trips": 3553809.104852047,
+  "W_star_minutes": 1.1839978630705779,
+  "R_star": 0.9598970668973547
+}

@@ -1,0 +1,17 @@
+{
+  "experiment": "modechoice_v3_lp_h8",
+  "source_tag": "eqsearch_lp_mc_main_iter10",
+  "layout": "mode-choice",
+  "rebalance_mechanism": "lp",
+  "positioning_lp_horizon": 8,
+  "fleet_size": 7500,
+  "vehicles_per_vertiport": 250,
+  "n_vertiports": 30,
+  "n_bins": 500,
+  "bin_minutes": 30,
+  "low_battery_threshold_pct": 20.0,
+  "assignment_ratio": "real operational assignment ratio R*",
+  "exclude_from_real_unmet": [
+    "unmet_rounding_jitter"
+  ]
+}

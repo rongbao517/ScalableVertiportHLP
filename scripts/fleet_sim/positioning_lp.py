@@ -242,11 +242,13 @@ def plan_and_execute_positioning(vehicle_states, vertiport_states, vehicle_movem
     planned_total_raw = 0.0
     planned_total_rounded = 0
     executed_total = 0
+    current_plan_values = []
     if result.success:
         for (v, w, tau), c in r_idx.items():
             if tau != current_step:
                 continue
             planned = result.x[c]
+            current_plan_values.append(float(planned))
             if planned < 0.5:
                 continue
             planned_total_raw += planned
@@ -274,6 +276,9 @@ def plan_and_execute_positioning(vehicle_states, vertiport_states, vehicle_movem
             "planned_total_raw": planned_total_raw,
             "planned_total_rounded": planned_total_rounded,
             "executed_total": executed_total,
+            "n_current_lp_arcs": len(current_plan_values),
+            "n_near_half_arcs": sum(0.45 <= value <= 0.55 for value in current_plan_values),
+            "near_half_flow": sum(value for value in current_plan_values if 0.45 <= value <= 0.55),
             "n_moves_planned_pairs": sum(1 for (v, w, tau), c in r_idx.items()
                                           if tau == current_step and result.success and result.x[c] >= 0.5),
         })

@@ -75,6 +75,12 @@ exploration phase, and is out of scope for the layout comparison.
   reference.
 - `outputs/figures/layout_comparison_convergence_en.{png,svg}` -- convergence
   plots (D_t/W_t/R_t) for the three frozen layouts (v1/Tier0 era).
+- `scripts/fleet_sim/plot_modechoice_v3lp_results.py` -- reproducibly generates
+  the current mode-choice v3/LP assignment-ratio, real-R*, idle-vehicle
+  distribution, and low-battery figures from the saved fleet-simulation CSVs.
+  With no arguments it reads the frozen H=8 run
+  (`eqsearch_lp_mc_main_iter10`) and writes PNG+SVG files under
+  `outputs/figures/`.
 
 ## Known open items (as of 2026-07-23)
 

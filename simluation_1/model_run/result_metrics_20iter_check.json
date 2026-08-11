@@ -1,0 +1,16 @@
+{
+  "source_tag": "lp_mc_20iter_check",
+  "n_iterations": 20,
+  "converged": false,
+  "convergence_note": "The run reached the 20-iteration limit without satisfying the predefined convergence criterion.",
+  "last_4_D_mean": 3553300.396442699,
+  "last_4_W_mean_minutes": 1.172409332683959,
+  "last_4_R_mean": 0.9600967100892035,
+  "last_4_W_std_minutes": 0.05502439182651826,
+  "last_4_W_range_minutes": 0.1166620210839211,
+  "last_8_D_mean": 3552270.7591055557,
+  "last_8_W_mean_minutes": 1.180858199480952,
+  "last_8_R_mean": 0.9597263060851793,
+  "last_8_W_std_minutes": 0.046307123873509826,
+  "last_8_W_range_minutes": 0.14710435164298397
+}

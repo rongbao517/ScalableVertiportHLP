@@ -73,13 +73,18 @@ R\*依然回升,证明改善是真实的,没有被"需求更低所以更容易�
 
 ## 五、还没解决的问题
 
-1. **LP还不是默认机制**——是否要把`--rebalance-mechanism`的默认值从`tier0`切到`lp`,
-   需要明确决定,不应该悄悄改。
+1. ~~**LP还不是默认机制**——是否要把`--rebalance-mechanism`的默认值从`tier0`切到`lp`,
+   需要明确决定,不应该悄悄改。~~ **已完成(2026-07-23,commit `b9e239e`)**:
+   `--rebalance-mechanism`默认值已改为`lp`(两处调用点同步修改),理由是6/6固定需求
+   场景+3个完整均衡布局全部无例外支持LP。
 2. **MANIFEST.md/README.md尚未正式更新**——目前项目官方文档仍停留在v1记录,本报告
    可作为更新素材,但尚未真正合并进`_frozen_baseline_v1/MANIFEST.md`或建立对应的
    v3冻结记录。
-3. **没有建立与v1同等规格的"冻结基线"快照**——v3(修复+LP)的结果目前分散在
-   `eqsearch_trajectory_lp_*.csv`等文件里,没有类似`_frozen_baseline_v1/`的正式归档。
+3. ~~**没有建立与v1同等规格的"冻结基线"快照**——v3(修复+LP)的结果目前分散在
+   `eqsearch_trajectory_lp_*.csv`等文件里,没有类似`_frozen_baseline_v1/`的正式归档。~~
+   **已完成(2026-07-23,commit `b9e239e`)**:新建`outputs/fleet_sim/_frozen_baseline_v3_lp/MANIFEST.md`,
+   规格与v1对齐(布局文件SHA256校验、H=8/H=12稳健性复核),并在`_frozen_baseline_v1/MANIFEST.md`
+   中标注排名结论已被取代(保留原文不改,符合项目"不覆写历史结果"惯例)。
 4. **fleet=4500(容量紧张)场景的电量瓶颈**(约36-43%的real_unmet来自电量)尚未处理,
    若该场景进入正式部署范围,需要考虑电量分桶。
 5. **本次会话产生的大量临时/调试文件**(`outputs/fleet_sim/_sweep_tmp/`下几十个log,

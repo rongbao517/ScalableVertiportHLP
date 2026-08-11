@@ -597,9 +597,9 @@ def main():
     ap.add_argument("--rebalance-mechanism", choices=["tier0", "lp"], default="lp",
                      help="lp (default as of 2026-07-23): the rolling-horizon positioning LP "
                           "(positioning_lp.py, 2026-07-22) -- beat tier0 in every one of 6 fixed-demand "
-                          "robustness scenarios (R* +2.3 to +4.4pp, empty mileage -2.6% to -9.9%, reactive "
-                          "shortage dispatch -28.9% to -84.7%) and in full demand-equilibrium re-convergence "
-                          "for all 3 site layouts (all crossed back above the 95% feasibility gate; see "
+                          "robustness scenarios (R* +2.3 to +4.4pp, empty mileage -2.6%% to -9.9%%, reactive "
+                          "shortage dispatch -28.9%% to -84.7%%) and in full demand-equilibrium re-convergence "
+                          "for all 3 site layouts (all crossed back above the 95%% feasibility gate; see "
                           "outputs/fleet_sim/LP_MIGRATION_REPORT.md). tier0: the older net_inflow-based "
                           "predictive tier, gated by --predictive-rebalancing -- kept for backward "
                           "compatibility/comparison, not recommended for new runs. --predictive-rebalancing "
@@ -613,6 +613,8 @@ def main():
                      help="small per-km penalty on empty repositioning distance in the LP objective, purely "
                           "to break ties against pointless moves -- never large enough to compete with the "
                           "objective's dominant term (maximizing served demand)")
+    ap.add_argument("--positioning-lp-diag-out", type=Path, default=None,
+                    help="optional CSV path for per-bin LP rounding diagnostics; does not affect dispatch")
     ap.add_argument("--tag", type=str, default="v1")
     args = ap.parse_args()
 
@@ -647,6 +649,7 @@ def main():
     vehicles = [f"V{i}" for i in range(1, args.vehicles_per_vertiport * len(grid_ids) + 1)]
     vehicle_states, vertiport_states = initialize_states_with_time(vehicles, grid_ids, args.vehicles_per_vertiport)
 
+    positioning_lp_diag = [] if args.positioning_lp_diag_out else None
     start = time.time()
     (summary, cumulative_cost, assigned_routes_log, charging_log, rebalance_log,
      vertiport_occupancy_log, vertiport_total_count_log, site_assignment_stats,
@@ -679,6 +682,7 @@ def main():
         positioning_lp_enabled=(args.rebalance_mechanism == "lp"),
         positioning_lp_horizon=args.positioning_lp_horizon,
         positioning_lp_lambda=args.positioning_lp_lambda,
+        positioning_lp_diag_log=positioning_lp_diag,
     )
     elapsed = time.time() - start
     print(f"simulation finished in {elapsed:.1f}s")
@@ -689,6 +693,9 @@ def main():
     pd.DataFrame(rebalance_log).to_csv(SIM_OUT_DIR / f"rebalance_log_{args.tag}.csv", index=False)
     pd.DataFrame(vertiport_occupancy_log).to_csv(SIM_OUT_DIR / f"vertiport_occupancy_{args.tag}.csv", index=False)
     pd.DataFrame(vertiport_total_count_log).to_csv(SIM_OUT_DIR / f"vertiport_total_count_{args.tag}.csv", index=False)
+    if args.positioning_lp_diag_out:
+        args.positioning_lp_diag_out.parent.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame(positioning_lp_diag).to_csv(args.positioning_lp_diag_out, index=False)
     pd.DataFrame(battery_summary_log).to_csv(SIM_OUT_DIR / f"battery_summary_{args.tag}.csv", index=False)
     shortfall_by_site_df = pd.DataFrame([
         {"grid_id": s, **vals} for s, vals in shortfall_by_site_accum.items()
